@@ -18,10 +18,11 @@ npm run dev
 npm run build
 ```
 ## Project Layout
-paleotrainingplatform                   
-├── frontend
-  ├── src
-  ├── static
-  ├── templates
-├── paleotrainingplatform
-├── training (backend)
+
+    paleotrainingplatform
+    ├── frontend                  
+      ├── src                  
+      ├── static                     
+      ├── templates                   
+    ├── paleotrainingplatform                   
+    └── training (backend)
