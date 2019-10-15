@@ -1,10 +1,15 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import Axios from "axios";
+import ImageScoring from "./ImageScoring";
 
-class App extends Component {
-  render() {
-    return <h1>React App</h1>;
-  }
+function App() {
+  return (
+    <div>
+      <h1>React App</h1>
+      <ImageScoring />
+    </div>
+  );
 }
 
-ReactDOM.render(<App />, document.getElementById("app"));
+export default App;
