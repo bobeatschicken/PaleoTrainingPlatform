@@ -1,7 +1,7 @@
 from rest_framework import routers
-from .api import ImageViewSet
+from .api import LesionImageViewSet
 
 router = routers.DefaultRouter()
-router.register('api/training', ImageViewSet, 'leads')
+router.register('api/training', LesionImageViewSet, 'leads')
 
 urlpatterns = router.urls

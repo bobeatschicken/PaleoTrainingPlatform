@@ -1,13 +1,13 @@
-from training.models import Image
+from training.models import LesionImage
 from rest_framework import viewsets, permissions
-from .serializers import ImageSerializer
+from .serializers import LesionImageSerializer
 
 # Image Viewset
 
 
-class ImageViewSet(viewsets.ModelViewSet):
-    queryset = Image.objects.all()
+class LesionImageViewSet(viewsets.ModelViewSet):
+    queryset = LesionImage.objects.all()
     permission_class = [
         permissions.AllowAny
     ]
-    serializer_class = ImageSerializer
+    serializer_class = LesionImageSerializer
