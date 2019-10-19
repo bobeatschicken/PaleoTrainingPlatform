@@ -17,12 +17,3 @@ npm run dev
 # Build for production
 npm run build
 ```
-## Project Layout
-
-    paleotrainingplatform
-    ├── frontend                  
-      ├── src                  
-      ├── static                     
-      ├── templates                   
-    ├── paleotrainingplatform                   
-    └── training (backend)
