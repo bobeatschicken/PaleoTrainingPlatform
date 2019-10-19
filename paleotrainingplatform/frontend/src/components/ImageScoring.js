@@ -29,18 +29,23 @@ const ImageScoring = props => {
                 style={{
                   display: "block",
                   marginLeft: "auto",
-                  marginRight: "auto"
+                  marginRight: "auto",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  padding: "5px",
+                  width: "150px"
                 }}
+                enlargedImagePosition="over"
                 {...{
                   smallImage: {
                     src: `http://127.0.0.1:8000/media/Screen_Shot_2019-09-02_at_1.08.17_PM.png`,
-                    width: 300,
-                    height: 200
+                    width: 900,
+                    height: 600
                   },
                   largeImage: {
                     src: `http://127.0.0.1:8000/media/Screen_Shot_2019-09-02_at_1.08.17_PM.png`,
-                    width: 600,
-                    height: 400
+                    width: 1800,
+                    height: 1200
                   }
                 }}
               />
