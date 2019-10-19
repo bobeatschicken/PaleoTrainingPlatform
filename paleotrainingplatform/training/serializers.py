@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from training.models import Image
+from training.models import LesionImage
 
 
-class ImageSerializer(serializers.ModelSerializer):
+class LesionImageSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Image
+        model = LesionImage
         fields = '__all__'
