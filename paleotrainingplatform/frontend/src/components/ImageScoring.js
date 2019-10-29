@@ -24,26 +24,25 @@ const ImageScoring = props => {
       {isLoaded ? (
         <div>
           {images.map(image => {
+            console.log(image);
             return (
               <ReactImageMagnify
                 style={{
                   display: "block",
                   marginLeft: "auto",
                   marginRight: "auto",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  padding: "5px",
-                  width: "150px"
+                  marginBottom: "50px",
+                  marginTop: "50px"
                 }}
                 enlargedImagePosition="over"
                 {...{
                   smallImage: {
-                    src: `http://127.0.0.1:8000/media/Screen_Shot_2019-09-02_at_1.08.17_PM.png`,
+                    src: image.image_url,
                     width: 900,
                     height: 600
                   },
                   largeImage: {
-                    src: `http://127.0.0.1:8000/media/Screen_Shot_2019-09-02_at_1.08.17_PM.png`,
+                    src: image.image_url,
                     width: 1800,
                     height: 1200
                   }
