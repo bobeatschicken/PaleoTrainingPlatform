@@ -4,5 +4,5 @@ from django.db import models
 
 
 class LesionImage(models.Model):
-    lesion_type = models.IntegerField()
+    lesion_type = models.CharField(max_length=256)
     image_url = models.ImageField(unique=True)
