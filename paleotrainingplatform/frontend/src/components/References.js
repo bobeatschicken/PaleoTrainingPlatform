@@ -3,9 +3,9 @@ import { Loader, Label, Dropdown, Grid } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import Axios from "axios";
 
-const ImageScoring = props => {
+const References = props => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [images, setImages] = useState(null);
+  const [references, setReferences] = useState(null);
   const lesionTypeOptions = [
     { value: "Type 0", text: "Type 0" },
     { value: "Type 1", text: "Type 1" },
@@ -32,10 +32,10 @@ const ImageScoring = props => {
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://127.0.0.1:8000/api/training/lesionImage/`).then(
+      Axios.get(`http://127.0.0.1:8000/api/training/lesionReference/`).then(
         result => {
           console.log(result.data);
-          setImages(result.data);
+          setReferences(result.data);
           if (result.data) {
             setIsLoaded(true);
           }
@@ -48,17 +48,18 @@ const ImageScoring = props => {
     <div>
       {isLoaded ? (
         <div>
-          {images.map(image => {
-            console.log(image);
+          <h2>Lesion Reference Images</h2>
+          {references.map(reference => {
+            console.log(reference);
             return (
               <div>
-                <h2
+                <h5
                   style={{
-                    marginLeft: "17%"
+                    marginLeft: "9%"
                   }}
                 >
-                  {image.id})
-                </h2>
+                  {reference.id})
+                </h5>
                 <ReactImageMagnify
                   style={{
                     display: "block",
@@ -70,59 +71,33 @@ const ImageScoring = props => {
                   enlargedImagePosition="over"
                   {...{
                     smallImage: {
-                      src: image.image_url,
-                      width: 900,
-                      height: 600
+                      src: reference.image_url,
+                      width: 360,
+                      height: 240
                     },
                     largeImage: {
-                      src: image.image_url,
-                      width: 1800,
-                      height: 1200
+                      src: reference.image_url,
+                      width: 720,
+                      height: 480
                     }
                   }}
                 />
                 <Grid centered>
-                  <Label size="big">
-                    a) Which category is the lesion above most appropriately
-                    assigned?
+                  <Label size="small">
+                    <b>Lesion Type: </b>
+                    {reference.lesion_type}
                   </Label>
                 </Grid>
                 <br />
                 <br />
                 <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "39%"
-                    }}
-                    placeholder="Select lesion type"
-                    fluid
-                    search
-                    selection
-                    options={lesionTypeOptions}
-                  />
-                </Grid>
-                <br />
-                <br />
-                <Grid centered>
-                  <Label size="big">
-                    b) Which category best describes the state of the lesion
-                    above?
+                  <Label size="small">
+                    <b>Description: </b>
+                    {reference.description}
                   </Label>
                 </Grid>
                 <br />
                 <br />
-                <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "36%"
-                    }}
-                    placeholder="Select lesion type"
-                    fluid
-                    search
-                    selection
-                    options={lesionActivityOptions}
-                  />
-                </Grid>
               </div>
             );
           })}
@@ -134,4 +109,4 @@ const ImageScoring = props => {
   );
 };
 
-export default ImageScoring;
+export default References;
