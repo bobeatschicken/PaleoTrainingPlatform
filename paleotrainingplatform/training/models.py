@@ -20,3 +20,11 @@ class LesionReference(models.Model):
     def delete(self, *args, **kwargs):
         self.image_url.delete()
         super().delete(*args, **kwargs)
+
+class HealingReference(models.Model):
+    healing_type = models.CharField(max_length=256)
+    image_url = models.ImageField(unique=True)
+
+    def delete(self, *args, **kwargs):
+        self.image.url.delete()
+        super().delete(*args, **kwargs)

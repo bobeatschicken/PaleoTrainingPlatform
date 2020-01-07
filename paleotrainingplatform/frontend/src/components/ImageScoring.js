@@ -34,7 +34,6 @@ const ImageScoring = props => {
     if (!isLoaded) {
       Axios.get(`http://127.0.0.1:8000/api/training/lesionImage/`).then(
         result => {
-          console.log(result.data);
           setImages(result.data);
           if (result.data) {
             setIsLoaded(true);
@@ -49,7 +48,6 @@ const ImageScoring = props => {
       {isLoaded ? (
         <div>
           {images.map(image => {
-            console.log(image);
             return (
               <div>
                 <h2
