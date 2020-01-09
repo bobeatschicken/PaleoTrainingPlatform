@@ -2,9 +2,11 @@ from django.db import models
 
 # Create your models here.
 
+class LesionType(models.Model):
+    lesion_type = models.CharField(max_length=256)
 
 class LesionImage(models.Model):
-    lesion_type = models.CharField(max_length=256)
+    lesion_types = models.ManyToManyField(LesionType)
     image_url = models.ImageField(unique=True)
 
     def delete(self, *args, **kwargs):
