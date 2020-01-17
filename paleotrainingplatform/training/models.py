@@ -3,11 +3,15 @@ from django.db import models
 # Create your models here.
 
 class LesionType(models.Model):
-    lesion_type = models.CharField(max_length=256)
+    name = models.CharField(max_length=256)
+    description = models.TextField(default="No Description Available")
+
+    def __str__(self):
+        return self.name
 
 class LesionImage(models.Model):
-    lesion_types = models.ManyToManyField(LesionType)
     image_url = models.ImageField(unique=True)
+    lesion_types = models.ManyToManyField(LesionType)
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
@@ -15,9 +19,8 @@ class LesionImage(models.Model):
 
 
 class LesionReference(models.Model):
-    lesion_type = models.CharField(max_length=256)
+    lesion_type = models.ForeignKey(LesionType, on_delete=models.CASCADE, null=True)
     image_url = models.ImageField(unique=True)
-    description = models.TextField()
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
