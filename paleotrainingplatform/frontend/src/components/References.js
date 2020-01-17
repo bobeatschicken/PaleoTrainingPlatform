@@ -6,24 +6,6 @@ import Axios from "axios";
 const References = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [references, setReferences] = useState(null);
-  const lesionTypeOptions = [
-    { value: "Type 0", text: "Type 0" },
-    { value: "Type 1", text: "Type 1" },
-    {
-      value: "Type 2+3",
-      text: "Type 2+3"
-    },
-    {
-      value: "Type 4",
-      text: "Type 4"
-    },
-    {
-      value: "Type 5",
-      text: "Type 5"
-    },
-    { value: "Type 6", text: "Type 6" },
-    { value: "Other", text: "Other" }
-  ];
   const lesionActivityOptions = [
     { value: "1", text: "active" },
     { value: "2", text: "healed" },
@@ -34,7 +16,6 @@ const References = props => {
     if (!isLoaded) {
       Axios.get(`http://127.0.0.1:8000/api/training/lesionReference/`).then(
         result => {
-          console.log(result.data);
           setReferences(result.data);
           if (result.data) {
             setIsLoaded(true);
@@ -50,7 +31,6 @@ const References = props => {
         <div>
           <h2>Lesion Reference Images</h2>
           {references.map(reference => {
-            console.log(reference);
             return (
               <div>
                 <h5
@@ -85,7 +65,7 @@ const References = props => {
                 <Grid centered>
                   <Label size="small">
                     <b>Lesion Type: </b>
-                    {reference.lesion_type}
+                    {reference.lesion_type.name}
                   </Label>
                 </Grid>
                 <br />
@@ -93,7 +73,7 @@ const References = props => {
                 <Grid centered>
                   <Label size="small">
                     <b>Description: </b>
-                    {reference.description}
+                    {reference.lesion_type.description}
                   </Label>
                 </Grid>
                 <br />
