@@ -6,24 +6,7 @@ import Axios from "axios";
 const ImageScoring = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [images, setImages] = useState(null);
-  const lesionTypeOptions = [
-    { value: "Type 0", text: "Type 0" },
-    { value: "Type 1", text: "Type 1" },
-    {
-      value: "Type 2+3",
-      text: "Type 2+3"
-    },
-    {
-      value: "Type 4",
-      text: "Type 4"
-    },
-    {
-      value: "Type 5",
-      text: "Type 5"
-    },
-    { value: "Type 6", text: "Type 6" },
-    { value: "Other", text: "Other" }
-  ];
+  const [lesionTypeOptions, setLesionTypeOptions] = useState(null);
   const lesionActivityOptions = [
     { value: "1", text: "active" },
     { value: "2", text: "healed" },
@@ -36,7 +19,19 @@ const ImageScoring = props => {
         result => {
           setImages(result.data);
           if (result.data) {
-            setIsLoaded(true);
+            Axios.get(`http://127.0.0.1:8000/api/training/lesionType/`).then(
+              response => {
+                var options = []
+                for (var i = 0; i < response.data.length; i++) {
+                  options.push({value: response.data[i].name, text: response.data[i].name})
+                }
+                console.log(options)
+                setLesionTypeOptions(options)
+                if (response.data) {
+                  setIsLoaded(true)
+                }
+              }
+            )
           }
         }
       );
