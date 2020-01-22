@@ -1,6 +1,6 @@
-from training.models import LesionImage, LesionReference, LesionType
+from training.models import LesionImage, LesionReference, LesionType, HealingReference
 from rest_framework import viewsets, permissions
-from .serializers import LesionImageSerializer, LesionReferenceSerializer, LesionTypeSerializer
+from .serializers import LesionImageSerializer, LesionReferenceSerializer, LesionTypeSerializer, HealingReferenceSerializer
 
 # Image Viewset
 
@@ -25,3 +25,10 @@ class LesionReferenceViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = LesionReferenceSerializer
+
+class HealingReferenceViewSet(viewsets.ModelViewSet):
+    queryset = HealingReference.objects.all()
+    permission_class = [
+        permissions.AllowAny
+    ]
+    serializer_class = HealingReferenceSerializer

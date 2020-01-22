@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class LesionType(models.Model):
@@ -17,7 +17,6 @@ class LesionImage(models.Model):
         self.image_url.delete()
         super().delete(*args, **kwargs)
 
-
 class LesionReference(models.Model):
     lesion_type = models.ForeignKey(LesionType, on_delete=models.CASCADE, null=True)
     image_url = models.ImageField(unique=True)
@@ -27,9 +26,10 @@ class LesionReference(models.Model):
         super().delete(*args, **kwargs)
 
 class HealingReference(models.Model):
-    healing_type = models.CharField(max_length=256)
+    degree = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(4)])
+    description = models.TextField(default="No Description Available")
     image_url = models.ImageField(unique=True)
 
     def delete(self, *args, **kwargs):
-        self.image.url.delete()
+        self.image_url.delete()
         super().delete(*args, **kwargs)
