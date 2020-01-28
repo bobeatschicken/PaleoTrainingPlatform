@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Label, Dropdown, Grid } from "semantic-ui-react";
+import { Loader, Label, Dropdown, Grid, Form } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import Axios from "axios";
 
@@ -7,6 +7,7 @@ const ImageScoring = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [images, setImages] = useState(null);
   const [lesionTypeOptions, setLesionTypeOptions] = useState(null);
+  const [lesionScores, setLesionScores] = useState({})
   const lesionActivityOptions = [
     { value: "1", text: "active" },
     { value: "2", text: "healed" },
@@ -25,7 +26,6 @@ const ImageScoring = props => {
                 for (var i = 0; i < response.data.length; i++) {
                   options.push({value: response.data[i].name, text: response.data[i].name})
                 }
-                console.log(options)
                 setLesionTypeOptions(options)
                 if (response.data) {
                   setIsLoaded(true)
@@ -38,10 +38,14 @@ const ImageScoring = props => {
     }
   }, [isLoaded]);
 
+  function handleSubmit() {
+    console.log(lesionScores)
+  }
+
   return (
     <div>
       {isLoaded ? (
-        <div>
+        <Form>
           {images.map(image => {
             return (
               <div>
@@ -83,20 +87,18 @@ const ImageScoring = props => {
                 <br />
                 <br />
                 <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "39%"
-                    }}
-                    placeholder="Select lesion type"
-                    fluid
-                    search
-                    selection
-                    options={lesionTypeOptions}
+                  <Form.Select 
+                  fluid
+                  onChange={(e, data) => {
+                    const imageURL = image.image_url
+                    lesionScores[imageURL] = data.value
+                  }}
+                  options={lesionTypeOptions} 
                   />
                 </Grid>
                 <br />
                 <br />
-                <Grid centered>
+                {/* <Grid centered>
                   <Label size="big">
                     b) Which category best describes the state of the lesion
                     above?
@@ -105,21 +107,17 @@ const ImageScoring = props => {
                 <br />
                 <br />
                 <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "36%"
-                    }}
-                    placeholder="Select lesion type"
-                    fluid
-                    search
-                    selection
-                    options={lesionActivityOptions}
+                  <Form.Select
+                  fluid
+                  name={image.image_url + " healing score"}
+                  options={lesionActivityOptions}
                   />
-                </Grid>
+                </Grid> */}
               </div>
             );
           })}
-        </div>
+          <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
+        </Form>
       ) : (
         <Loader active />
       )}
