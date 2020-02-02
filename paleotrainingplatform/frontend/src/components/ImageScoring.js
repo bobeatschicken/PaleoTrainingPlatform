@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Loader, Label, Dropdown, Grid, Form } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
+import {Link} from "react-router-dom";
 import Axios from "axios";
 
 const ImageScoring = props => {
@@ -116,7 +117,9 @@ const ImageScoring = props => {
               </div>
             );
           })}
+          <Link to="/results">
           <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
+          </Link>
         </Form>
       ) : (
         <Loader active />
