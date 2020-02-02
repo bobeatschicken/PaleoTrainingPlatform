@@ -40,7 +40,7 @@ const ImageScoring = props => {
   }, [isLoaded]);
 
   function handleSubmit() {
-    console.log(lesionScores)
+    // console.log(lesionScores)
   }
 
   return (
@@ -117,7 +117,12 @@ const ImageScoring = props => {
               </div>
             );
           })}
-          <Link to="/results">
+          <Link to={{
+            pathname: "/results",
+            state: {
+              scores: lesionScores
+            }
+            }}>
           <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
           </Link>
         </Form>
