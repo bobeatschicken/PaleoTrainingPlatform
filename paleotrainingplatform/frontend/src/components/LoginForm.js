@@ -1,25 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {
-  Button,
   Form,
   Grid,
   Header,
-  Image,
   Message,
   Segment
 } from "semantic-ui-react";
 
 const LoginForm = props => {
 
-  const [scores, setScores] = useState({})
-
-  useEffect(() => {
-    setScores(props.location.state)
-  });
-
-  function printScores() {
-    console.log(scores)
-  }
   return (
     <Grid textAlign="center" style={{ height: "100vh" }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
@@ -50,7 +39,6 @@ const LoginForm = props => {
         <Message>
           New to us? <a href="#">Sign Up</a>
         </Message>
-        <Form.Button onClick={() => printScores()}>Print Scores to Console</Form.Button>
       </Grid.Column>
     </Grid>
   );

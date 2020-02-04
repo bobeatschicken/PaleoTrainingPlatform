@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Label, Dropdown, Grid, Form } from "semantic-ui-react";
+import { Loader, Label, Grid, Form } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import {Link} from "react-router-dom";
 import Axios from "axios";
@@ -120,7 +120,8 @@ const ImageScoring = props => {
           <Link to={{
             pathname: "/results",
             state: {
-              scores: lesionScores
+              scores: lesionScores,
+              lesionImages: images
             }
             }}>
           <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
