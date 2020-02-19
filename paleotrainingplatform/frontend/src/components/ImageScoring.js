@@ -1,47 +1,89 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Label, Dropdown, Grid } from "semantic-ui-react";
+import { Loader, Label, Grid, Form, Checkbox } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
+import { Link } from "react-router-dom";
 import Axios from "axios";
 
 const ImageScoring = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [images, setImages] = useState(null);
-  const [lesionTypeOptions, setLesionTypeOptions] = useState(null);
+  const [lesionScores, setLesionScores] = useState({})
+  // const [checked, setChecked] = useState(null);
+  const lesionTypeOptions = [
+    { value: "Type 0", text: "Absence of lesions" },
+    { value: "Type A", text: "Type A" },
+    { value: "Type B", text: "Type B" },
+    { value: "Type C", text: "Type C" },
+    { value: "Type D", text: "Type D" },
+    { value: "Type E1", text: "Type E1" },
+    { value: "Type E2", text: "Type E2" }
+  ]
+  const [lesionTypes, setLesionTypes] = useState(null);
   const lesionActivityOptions = [
     { value: "1", text: "active" },
     { value: "2", text: "healed" },
     { value: "3", text: "mixed" }
   ];
 
+  const lesionTypeIndex = {
+    "Type 0": "1",
+    "Type A": "2",
+    "Type B": "3",
+    "Type C": "4",
+    "Type D": "5",
+    "Type E1": "6",
+    "Type E2": "7",
+  }
+
   useEffect(() => {
     if (!isLoaded) {
       Axios.get(`http://127.0.0.1:8000/api/training/lesionImage/`).then(
         result => {
-          setImages(result.data);
           if (result.data) {
-            Axios.get(`http://127.0.0.1:8000/api/training/lesionType/`).then(
-              response => {
-                var options = []
-                for (var i = 0; i < response.data.length; i++) {
-                  options.push({value: response.data[i].name, text: response.data[i].name})
-                }
-                console.log(options)
-                setLesionTypeOptions(options)
-                if (response.data) {
-                  setIsLoaded(true)
-                }
-              }
-            )
+            // for (var i = 0; i < result.data.length; i++) {
+            //   for (var j = 0; j < lesionTypeOptions.length; j++) {
+            //     checked[result.data[i].image_url][lesionTypeOptions[j].value] = false;
+            //   }
+            // }
+            // Axios.get(`http://127.0.0.1:8000/api/training/lesionType/`).then(
+            //   response => {
+            //     setLesionTypes(response.data)
+            //     if (response.data) {
+            //       setIsLoaded(true)
+            //     }
+            //   }
+            // )
+            setImages(result.data);
+            setIsLoaded(true);
           }
         }
       );
     }
   }, [isLoaded]);
 
+  function handleSubmit() {
+    for (const [imageURL, type] of Object.entries(lesionScores)) {
+      console.log(type)
+      Axios.post(`http://127.0.0.1:8000/api/training/lesionScore/`, {
+        image_url: imageURL,
+        score: type
+      }).then(function (response) {
+        console.log(response)
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
+  }
+
+  // checkboxChangeHandler = (data) => {
+  //   checked[data.name][data.label] = data.checked;
+  // }
+
   return (
     <div>
       {isLoaded ? (
-        <div>
+        <Form>
           {images.map(image => {
             return (
               <div>
@@ -83,20 +125,33 @@ const ImageScoring = props => {
                 <br />
                 <br />
                 <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "39%"
-                    }}
-                    placeholder="Select lesion type"
+                  <Form.Select
                     fluid
-                    search
-                    selection
+                    onChange={(e, data) => {
+                      // if (data.value == "More than one lesion type present") {
+                      //   return (<Form.Group>
+                      //     <label>Please select multiple lesion types if applicable:</label>
+                      //     {lesionTypeOptions.map(option => {
+                      //       <Checkbox
+                      //         label={option.text}
+                      //         name={image.image_url}
+                      //         checked={checked[image.image_url][option.value]}
+                      //         onChange={(e, data) => checkboxChangeHandler(data)} />
+                      //     })}
+                      //   </Form.Group>)
+                      // } else {
+                      //   const imageURL = image.image_url
+                      //   lesionScores[imageURL] = data.value
+                      // }
+                      const imageURL = image.image_url
+                      lesionScores[imageURL] = data.value
+                    }}
                     options={lesionTypeOptions}
                   />
                 </Grid>
                 <br />
                 <br />
-                <Grid centered>
+                {/* <Grid centered>
                   <Label size="big">
                     b) Which category best describes the state of the lesion
                     above?
@@ -105,24 +160,28 @@ const ImageScoring = props => {
                 <br />
                 <br />
                 <Grid centered>
-                  <Dropdown
-                    style={{
-                      width: "36%"
-                    }}
-                    placeholder="Select lesion type"
-                    fluid
-                    search
-                    selection
-                    options={lesionActivityOptions}
+                  <Form.Select
+                  fluid
+                  name={image.image_url + " healing score"}
+                  options={lesionActivityOptions}
                   />
-                </Grid>
+                </Grid> */}
               </div>
             );
           })}
-        </div>
+          <Link to={{
+            pathname: "/results",
+            state: {
+              scores: lesionScores,
+              lesionImages: images
+            }
+          }}>
+            <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
+          </Link>
+        </Form>
       ) : (
-        <Loader active />
-      )}
+          <Loader active />
+        )}
     </div>
   );
 };
