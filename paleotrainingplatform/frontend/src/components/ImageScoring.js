@@ -8,6 +8,7 @@ const ImageScoring = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [images, setImages] = useState(null);
   const [lesionScores, setLesionScores] = useState({})
+  const [showCheckBox, setShowCheckBox] = useState(false)
   // const [checked, setChecked] = useState(null);
   const lesionTypeOptions = [
     { value: "Type 0", text: "Absence of lesions" },
@@ -24,16 +25,6 @@ const ImageScoring = props => {
     { value: "2", text: "healed" },
     { value: "3", text: "mixed" }
   ];
-
-  const lesionTypeIndex = {
-    "Type 0": "1",
-    "Type A": "2",
-    "Type B": "3",
-    "Type C": "4",
-    "Type D": "5",
-    "Type E1": "6",
-    "Type E2": "7",
-  }
 
   useEffect(() => {
     if (!isLoaded) {
@@ -128,26 +119,46 @@ const ImageScoring = props => {
                   <Form.Select
                     fluid
                     onChange={(e, data) => {
-                      // if (data.value == "More than one lesion type present") {
+                      // if (data.value == "Type 0") {
                       //   return (<Form.Group>
                       //     <label>Please select multiple lesion types if applicable:</label>
                       //     {lesionTypeOptions.map(option => {
                       //       <Checkbox
                       //         label={option.text}
                       //         name={image.image_url}
-                      //         checked={checked[image.image_url][option.value]}
-                      //         onChange={(e, data) => checkboxChangeHandler(data)} />
+                      //         checked={false}
+                      //       />
+                      //       // onChange={(e, data) => checkboxChangeHandler(data)} />
                       //     })}
                       //   </Form.Group>)
                       // } else {
                       //   const imageURL = image.image_url
                       //   lesionScores[imageURL] = data.value
                       // }
-                      const imageURL = image.image_url
-                      lesionScores[imageURL] = data.value
+                      if (data.value == "Type 0") {
+                        setShowCheckBox(true)
+                      } else {
+                        const imageURL = image.image_url
+                        lesionScores[imageURL] = data.value
+                        setShowCheckBox(false)
+                      }
                     }}
                     options={lesionTypeOptions}
                   />
+                  {showCheckBox ? (
+                    <Form.Group>
+                      <label>Please select multiple lesion types if applicable:</label>
+                      {lesionTypeOptions.map(option => {
+                        <Checkbox
+                          label={option.text}
+                          name={image.image_url}
+                        />
+                        // onChange={(e, data) => checkboxChangeHandler(data)} />
+                      })}
+                    </Form.Group>
+                  ) : (
+                      <br />
+                    )}
                 </Grid>
                 <br />
                 <br />

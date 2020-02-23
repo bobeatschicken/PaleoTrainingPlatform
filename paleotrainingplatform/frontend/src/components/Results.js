@@ -78,26 +78,42 @@ const Results = props => {
                         return (
                             <Card>
                                 <Image src={image.image_url} />
-                                <Card.Content>
-                                    <Card.Description>Your score: {scores[image.image_url]}</Card.Description>
-                                    <Card.Description>Actual score: {image.lesion_types.map(function (lesion_type) {
-                                        return lesion_type.name
-                                    }).join(', ')}</Card.Description>
-                                    <Chart
-                                        chartType="ColumnChart"
-                                        width="100%"
-                                        column="100%"
-                                        data={chartData[image.image_url]}
-                                    />
-                                </Card.Content>
+                                {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
+                                    return lesion_type.name
+                                }) ? (
+                                        <Card.Content>
+                                            <Card.Description style={{
+                                                color: "green"
+                                            }}>Your score: {scores[image.image_url]}</Card.Description>
+                                            <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
+                                                return lesion_type.name
+                                            }).join(', ')}</Card.Description>
+                                        </Card.Content>
+                                    ) : (
+                                        <Card.Content>
+                                            <Card.Description style={{
+                                                color: "red"
+                                            }}>Your score: {scores[image.image_url]}</Card.Description>
+                                            <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
+                                                return lesion_type.name
+                                            }).join(', ')}</Card.Description>
+                                        </Card.Content>
+                                    )}
+                                <Chart
+                                    chartType="ColumnChart"
+                                    width="100%"
+                                    column="100%"
+                                    data={chartData[image.image_url]}
+                                />
                             </Card>
                         )
                     })}
                 </Card.Group>
             ) : (
                     <Loader active />
-                )}
-        </div>
+                )
+            }
+        </div >
     );
 }
 
