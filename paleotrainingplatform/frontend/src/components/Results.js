@@ -18,16 +18,21 @@ const Results = props => {
     useEffect(() => {
         if (!isLoaded) {
             if (props.location.state) {
+                console.log("received data from form")
+                console.log(props.location.state.scores)
                 setScores(props.location.state.scores)
                 setImages(props.location.state.lesionImages)
-            }
-            const scoresData = localStorage.getItem('scores')
-            if (scoresData) {
-                setScores(JSON.parse(scoresData))
-            }
-            const imagesData = localStorage.getItem('images')
-            if (imagesData) {
-                setImages(JSON.parse(imagesData))
+            } else {
+                const scoresData = localStorage.getItem('scores')
+                if (scoresData) {
+                    console.log("got scores from localstorage")
+                    setScores(JSON.parse(scoresData))
+                }
+                const imagesData = localStorage.getItem('images')
+                if (imagesData) {
+                    console.log("got images from localstorage")
+                    setImages(JSON.parse(imagesData))
+                }
             }
             Axios.get(`http://127.0.0.1:8000/api/training/lesionScore/`).then(
                 result => {
@@ -87,7 +92,7 @@ const Results = props => {
                                             }}>Your score: {scores[image.image_url]}</Card.Description>
                                             <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
                                                 return lesion_type.name
-                                            }).join(', ')}</Card.Description>
+                                            }).sort().join(', ')}</Card.Description>
                                         </Card.Content>
                                     ) : (
                                         <Card.Content>
@@ -96,7 +101,7 @@ const Results = props => {
                                             }}>Your score: {scores[image.image_url]}</Card.Description>
                                             <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
                                                 return lesion_type.name
-                                            }).join(', ')}</Card.Description>
+                                            }).sort().join(', ')}</Card.Description>
                                         </Card.Content>
                                     )}
                                 <Chart

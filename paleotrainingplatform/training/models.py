@@ -11,17 +11,28 @@ class LesionType(models.Model):
         return self.name
 
 
+class HealingType(models.Model):
+    degree = models.IntegerField(default=1, validators=[
+        MinValueValidator(1), MaxValueValidator(4)])
+    description = models.TextField(default="No Description Available")
+
+    def __str__(self):
+        return "Degree of expression: " + str(self.degree)
+
+
 class LesionScore(models.Model):
     image_url = models.CharField(max_length=256)
     score = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.image_url + " : " + self.scores
+        return self.image_url + " : " + self.score
 
 
 class LesionImage(models.Model):
     image_url = models.ImageField(unique=True)
     lesion_types = models.ManyToManyField(LesionType)
+    healing_type = models.ForeignKey(
+        HealingType, on_delete=models.CASCADE, null=True)
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
@@ -39,9 +50,8 @@ class LesionReference(models.Model):
 
 
 class HealingReference(models.Model):
-    degree = models.IntegerField(default=1, validators=[
-        MinValueValidator(1), MaxValueValidator(4)])
-    description = models.TextField(default="No Description Available")
+    healing_type = models.ForeignKey(
+        HealingType, on_delete=models.CASCADE, null=True)
     image_url = models.ImageField(unique=True)
 
     def delete(self, *args, **kwargs):
