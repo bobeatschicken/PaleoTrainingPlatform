@@ -70,6 +70,17 @@ const ImageScoring = props => {
           console.log(error)
         })
     }
+    for (const [imageURL, degree] of Object.entries(healingScores)) {
+      Axios.post(`http://127.0.0.1:8000/api/training/healingScore/`, {
+        image_url: imageURL,
+        score: degree
+      }).then(function (response) {
+        console.log(response)
+      })
+        .catch(function (error) {
+          console.log(error)
+        })
+    }
   }
 
   const checkboxChangeHandler = (data) => {
@@ -140,8 +151,10 @@ const ImageScoring = props => {
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, true)))
                         setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, true)))
                       } else if (data.value == "Absence of lesions") {
+                        delete healingScores[image.image_url]
                         delete lesionScores[image.image_url]
                         lesionScores[image.image_url] = data.value
+                        setShowCheckBox(new Map(showCheckBox.set(image.image_url, false)))
                         setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, false)))
                       } else {
                         delete checked[image.image_url]
@@ -205,7 +218,8 @@ const ImageScoring = props => {
               pathname: "/results",
               state: {
                 scores: resultDict,
-                lesionImages: images
+                lesionImages: images,
+                healingResult: healingScores
               }
             }}>
               <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>

@@ -28,6 +28,14 @@ class LesionScore(models.Model):
         return self.image_url + " : " + self.score
 
 
+class HealingScore(models.Model):
+    image_url = models.CharField(max_length=256)
+    score = models.CharField(max_length=1)
+
+    def __str__(self):
+        return self.image_url + " : " + self.score
+
+
 class LesionImage(models.Model):
     image_url = models.ImageField(unique=True)
     lesion_types = models.ManyToManyField(LesionType)

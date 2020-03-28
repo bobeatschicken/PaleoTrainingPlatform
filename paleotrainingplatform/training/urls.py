@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from .api import LesionImageViewSet, LesionReferenceViewSet, LesionTypeViewSet, HealingReferenceViewSet, LesionScoreViewSet, HealingTypeViewSet
+from .api import LesionImageViewSet, LesionReferenceViewSet, LesionTypeViewSet, HealingReferenceViewSet, LesionScoreViewSet, HealingTypeViewSet, HealingScoreViewSet
 
 router = routers.DefaultRouter()
 router.register('api/training/lesionImage',
@@ -17,6 +17,8 @@ router.register('api/training/lesionScore',
                 LesionScoreViewSet, 'lesion_score')
 router.register('api/training/healingType',
                 HealingTypeViewSet, 'healing_type')
+router.register('api/training/healingScore',
+                HealingScoreViewSet, 'healing_score')
 
 urlpatterns = [
     path('', include(router.urls))

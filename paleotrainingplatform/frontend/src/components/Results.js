@@ -14,14 +14,16 @@ const Results = props => {
     const [isLoaded, setIsLoaded] = useState(false)
     const [allScores, setAllScores] = useState(null)
     const [chartData, setChartData] = useState(null)
+    const [healingScores, setHealingScores] = useState(null)
+    const [allHealingScores, setAllHealingScores] = useState(null)
+    const [healingChartData, setHealingChartData] = useState(null)
 
     useEffect(() => {
         if (!isLoaded) {
             if (props.location.state) {
-                console.log("received data from form")
-                console.log(props.location.state.scores)
                 setScores(props.location.state.scores)
                 setImages(props.location.state.lesionImages)
+                setHealingScores(props.location.state.healingResult)
             } else {
                 const scoresData = localStorage.getItem('scores')
                 if (scoresData) {
@@ -32,6 +34,11 @@ const Results = props => {
                 if (imagesData) {
                     console.log("got images from localstorage")
                     setImages(JSON.parse(imagesData))
+                }
+                const healingData = localStorage.getItem('healingScores')
+                if (healingData) {
+                    console.log("got healingScores from localstorage")
+                    setHealingScores(JSON.parse(healingData))
                 }
             }
             Axios.get(`http://127.0.0.1:8000/api/training/lesionScore/`).then(
@@ -50,7 +57,6 @@ const Results = props => {
                                 data[result.data[i].image_url] = { [result.data[i].score]: 1 }
                             }
                         }
-                        console.log(data)
                         var scoresDict = {}
                         for (const [imageURL, typeDict] of Object.entries(data)) {
                             for (const [type, count] of Object.entries(typeDict)) {
@@ -61,8 +67,39 @@ const Results = props => {
                                 }
                             }
                         }
-                        console.log(scoresDict)
                         setChartData(scoresDict)
+                    }
+                }
+            )
+            Axios.get(`http://127.0.0.1:8000/api/training/healingScore/`).then(
+                result => {
+                    if (result.data) {
+                        setAllHealingScores(result.data)
+                        var data = {} // {image.url : {healingDegree: count}}
+                        for (var i = 0; i < result.data.length; i++) {
+                            if (result.data[i].image_url in data) {
+                                if (result.data[i].score in data[result.data[i].image_url]) {
+                                    data[result.data[i].image_url][result.data[i].score] += 1
+                                } else {
+                                    data[result.data[i].image_url][result.data[i].score] = 1
+                                }
+                            } else {
+                                data[result.data[i].image_url] = { [result.data[i].score]: 1 }
+                            }
+                        }
+                        console.log(data)
+                        var healingScoresDict = {}
+                        for (const [imageURL, degreeDict] of Object.entries(data)) {
+                            for (const [degree, count] of Object.entries(degreeDict)) {
+                                if (!(imageURL in healingScoresDict)) {
+                                    healingScoresDict[imageURL] = [["Degree of Healing", "Frequency", { role: "style" }], [degree, count, "gold"]]
+                                } else {
+                                    healingScoresDict[imageURL].push([degree, count, "gold"])
+                                }
+                            }
+                        }
+                        console.log(healingScoresDict)
+                        setHealingChartData(healingScoresDict)
                         setIsLoaded(true)
                     }
                 }
@@ -73,6 +110,7 @@ const Results = props => {
     useEffect(() => {
         localStorage.setItem("scores", JSON.stringify(scores))
         localStorage.setItem("images", JSON.stringify(images))
+        localStorage.setItem("healingScores", JSON.stringify(healingScores))
     })
 
     return (
@@ -80,35 +118,60 @@ const Results = props => {
             {isLoaded ? (
                 <Card.Group itemsPerRow={5}>
                     {images.map(image => {
+                        // console.log(chartData)
+                        // console.log(healingChartData)
                         return (
                             <Card>
                                 <Image src={image.image_url} />
-                                {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
-                                    return lesion_type.name
-                                }) ? (
-                                        <Card.Content>
+                                <Card.Content>
+                                    {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
+                                        return lesion_type.name
+                                    }) ? (
                                             <Card.Description style={{
                                                 color: "green"
-                                            }}>Your score: {scores[image.image_url]}</Card.Description>
-                                            <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
-                                                return lesion_type.name
-                                            }).sort().join(', ')}</Card.Description>
-                                        </Card.Content>
-                                    ) : (
-                                        <Card.Content>
+                                            }}>Your lesion score: {scores[image.image_url]}</Card.Description>
+                                        ) : (
                                             <Card.Description style={{
                                                 color: "red"
-                                            }}>Your score: {scores[image.image_url]}</Card.Description>
-                                            <Card.Description>Original observer's score: {image.lesion_types.map(function (lesion_type) {
-                                                return lesion_type.name
-                                            }).sort().join(', ')}</Card.Description>
-                                        </Card.Content>
+                                            }}>Your lesion score: {scores[image.image_url]}</Card.Description>
+                                        )}
+                                    <Card.Description>Original observer's lesion score: {image.lesion_types.map(function (lesion_type) {
+                                        return lesion_type.name
+                                    }).sort().join(', ')}</Card.Description>
+                                    {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                        return lesion_type.name
+                                    }) && healingScores[image.image_url] == image.healing_type.degree ? (
+                                            <Card.Description style={{
+                                                color: "green"
+                                            }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
+                                        ) : "Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                            return lesion_type.name
+                                        }) && healingScores[image.image_url] != image.healing_type.degree ? (
+                                                <Card.Description style={{
+                                                    color: "red"
+                                                }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
+                                        ) : (
+                                                <Card.Description>Your healing score: N/A</Card.Description>
+                                        )}
+                                    {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                        return lesion_type.name
+                                    }) ? (
+                                        <Card.Description>Original observer's healing score: {image.healing_type.degree}</Card.Description>
+                                    ) : (
+                                        <Card.Description>Original observer's healing score: N/A</Card.Description>
                                     )}
+                                </Card.Content>
                                 <Chart
                                     chartType="ColumnChart"
                                     width="100%"
                                     column="100%"
                                     data={chartData[image.image_url]}
+                                />
+                                <Chart
+                                    chartType="ColumnChart"
+                                    width="100%"
+                                    column="100%"
+                                    data={healingChartData[image.image_url]}
                                 />
                             </Card>
                         )

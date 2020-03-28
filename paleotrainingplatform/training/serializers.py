@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from training.models import LesionImage, LesionReference, LesionType, HealingReference, LesionScore, HealingType
+from training.models import LesionImage, LesionReference, LesionType, HealingReference, LesionScore, HealingType, HealingScore
 
 
 class LesionTypeSerializer(serializers.ModelSerializer):
@@ -17,6 +17,12 @@ class HealingTypeSerializer(serializers.ModelSerializer):
 class LesionScoreSerializer(serializers.ModelSerializer):
     class Meta:
         model = LesionScore
+        fields = '__all__'
+
+
+class HealingScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HealingScore
         fields = '__all__'
 
 
