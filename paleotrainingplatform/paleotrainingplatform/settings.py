@@ -26,7 +26,7 @@ SECRET_KEY = '1#1h#!@zf%65z$!7w19p_au((rtj^v8%f-#_(nl%(e)10nywxw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["658f7175.ngrok.io", '127.0.0.1']
 
 
 # Application definition
@@ -41,9 +41,12 @@ INSTALLED_APPS = [
     'frontend',
     'rest_framework',
     'training',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -51,6 +54,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    "https://example.com",
+    "https://sub.example.com",
+    "http://localhost:8080",
+    "http://127.0.0.1",
+    "https://658f7175.ngrok.io",
 ]
 
 ROOT_URLCONF = 'paleotrainingplatform.urls'

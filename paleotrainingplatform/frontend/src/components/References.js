@@ -67,7 +67,6 @@ const References = props => {
                 />
                 <Grid centered>
                   <Label size="small">
-                    <b>Lesion Type: </b>
                     {lesionReference.lesion_type.name}
                   </Label>
                 </Grid>
@@ -84,8 +83,8 @@ const References = props => {
               </div>
             );
           })}
-          <br/>
-          <br/>
+          <br />
+          <br />
           <h2>Healing Reference Images</h2>
           {healingReferences.map(healingReference => {
             return (
@@ -122,7 +121,7 @@ const References = props => {
                 <Grid centered>
                   <Label size="small">
                     <b>Degree of Expression: </b>
-                    {healingReference.degree}
+                    {healingReference.healing_type.degree}
                   </Label>
                 </Grid>
                 <br />
@@ -130,7 +129,7 @@ const References = props => {
                 <Grid centered>
                   <Label size="small">
                     <b>Description: </b>
-                    {healingReference.description}
+                    {healingReference.healing_type.description}
                   </Label>
                 </Grid>
                 <br />
@@ -140,8 +139,8 @@ const References = props => {
           })}
         </div>
       ) : (
-        <Loader active />
-      )}
+          <Loader active />
+        )}
     </div>
   );
 };
