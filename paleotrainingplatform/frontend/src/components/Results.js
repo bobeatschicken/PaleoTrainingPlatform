@@ -41,7 +41,7 @@ const Results = props => {
                     setHealingScores(JSON.parse(healingData))
                 }
             }
-            Axios.get(`http://127.0.0.1:8000/api/training/lesionScore/`).then(
+            Axios.get(`http://bobeatschicken.pythonanywhere.com/api/training/lesionScore/`).then(
                 result => {
                     if (result.data) {
                         setAllScores(result.data)
@@ -70,8 +70,10 @@ const Results = props => {
                         setChartData(scoresDict)
                     }
                 }
-            )
-            Axios.get(`http://127.0.0.1:8000/api/training/healingScore/`).then(
+            ).catch(function (error) {
+                console.log(error)
+            })
+            Axios.get(`http://bobeatschicken.pythonanywhere.com/api/training/healingScore/`).then(
                 result => {
                     if (result.data) {
                         setAllHealingScores(result.data)
@@ -103,7 +105,9 @@ const Results = props => {
                         setIsLoaded(true)
                     }
                 }
-            )
+            ).catch(function (error) {
+                console.log(error)
+            })
         }
     }, [isLoaded]);
 
