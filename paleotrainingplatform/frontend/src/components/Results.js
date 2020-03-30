@@ -41,7 +41,7 @@ const Results = props => {
                     setHealingScores(JSON.parse(healingData))
                 }
             }
-            Axios.get(`http://bobeatschicken.pythonanywhere.com/api/training/lesionScore/`).then(
+            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`).then(
                 result => {
                     if (result.data) {
                         setAllScores(result.data)
@@ -73,7 +73,7 @@ const Results = props => {
             ).catch(function (error) {
                 console.log(error)
             })
-            Axios.get(`http://bobeatschicken.pythonanywhere.com/api/training/healingScore/`).then(
+            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`).then(
                 result => {
                     if (result.data) {
                         setAllHealingScores(result.data)

@@ -33,7 +33,7 @@ const ImageScoring = props => {
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://bobeatschicken.pythonanywhere.com/api/training/lesionImage/`).then(
+      Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionImage/`).then(
         result => {
           if (result.data) {
             setImages(result.data);
@@ -62,7 +62,7 @@ const ImageScoring = props => {
       resultDict[imageURL] = type
     }
     for (const [imageURL, type] of Object.entries(resultDict)) {
-      Axios.post(`http://bobeatschicken.pythonanywhere.com/api/training/lesionScore/`, {
+      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type
       }).then(function (response) {
@@ -73,7 +73,7 @@ const ImageScoring = props => {
         })
     }
     for (const [imageURL, degree] of Object.entries(healingScores)) {
-      Axios.post(`http://bobeatschicken.pythonanywhere.com/api/training/healingScore/`, {
+      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree
       }).then(function (response) {
