@@ -26,7 +26,7 @@ SECRET_KEY = '1#1h#!@zf%65z$!7w19p_au((rtj^v8%f-#_(nl%(e)10nywxw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["658f7175.ngrok.io", '127.0.0.1']
+ALLOWED_HOSTS = ['paleotrainingplatform.pythonanywhere.com', '127.0.0.1']
 
 
 # Application definition
@@ -133,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/paleotrainingplatform/PaleoTrainingPlatform/paleotrainingplatform/static'
 
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
