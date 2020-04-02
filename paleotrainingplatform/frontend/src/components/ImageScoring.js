@@ -14,7 +14,7 @@ const ImageScoring = props => {
   const [resultDict, setResultDict] = useState({})
   const [showHealingOptions, setShowHealingOptions] = useState(new Map())
   const lesionTypeOptions = [
-    { value: "Absence of lesions", text: "Absence of lesions" },
+    { value: "Absence of pathological lesions", text: "Absence of pathological lesions" },
     { value: "Type A", text: "Type A" },
     { value: "Type B", text: "Type B" },
     { value: "Type C", text: "Type C" },
@@ -33,7 +33,7 @@ const ImageScoring = props => {
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionImage/`).then(
+      Axios.get(`http://127.0.0.1:8000/api/training/lesionImage/`).then(
         result => {
           if (result.data) {
             setImages(result.data);
@@ -62,7 +62,7 @@ const ImageScoring = props => {
       resultDict[imageURL] = type
     }
     for (const [imageURL, type] of Object.entries(resultDict)) {
-      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`, {
+      Axios.post(`http://127.0.0.1:8000/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type
       }).then(function (response) {
@@ -73,7 +73,7 @@ const ImageScoring = props => {
         })
     }
     for (const [imageURL, degree] of Object.entries(healingScores)) {
-      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`, {
+      Axios.post(`http://127.0.0.1:8000/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree
       }).then(function (response) {
@@ -152,7 +152,7 @@ const ImageScoring = props => {
                         delete lesionScores[image.image_url]
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, true)))
                         setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, true)))
-                      } else if (data.value == "Absence of lesions") {
+                      } else if (data.value == "Absence of pathological lesions") {
                         delete healingScores[image.image_url]
                         delete lesionScores[image.image_url]
                         lesionScores[image.image_url] = data.value
