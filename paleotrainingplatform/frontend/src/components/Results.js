@@ -128,7 +128,7 @@ const Results = props => {
                             <Card>
                                 <Image src={image.image_url} />
                                 <Card.Content>
-                                    {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
+                                    {scores[image.image_url] === image.lesion_types.map(function (lesion_type) {
                                         return lesion_type.name
                                     }) ? (
                                             <Card.Description style={{
