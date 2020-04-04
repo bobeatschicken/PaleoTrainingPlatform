@@ -14,7 +14,7 @@ const ImageScoring = props => {
   const [resultDict, setResultDict] = useState({})
   const [showHealingOptions, setShowHealingOptions] = useState(new Map())
   const lesionTypeOptions = [
-    { value: "Absence of lesions", text: "Absence of lesions" },
+    { value: "Absence of pathological lesions", text: "Absence of pathological lesions" },
     { value: "Type A", text: "Type A" },
     { value: "Type B", text: "Type B" },
     { value: "Type C", text: "Type C" },
@@ -152,7 +152,7 @@ const ImageScoring = props => {
                         delete lesionScores[image.image_url]
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, true)))
                         setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, true)))
-                      } else if (data.value == "Absence of lesions") {
+                      } else if (data.value == "Absence of pathological lesions") {
                         delete healingScores[image.image_url]
                         delete lesionScores[image.image_url]
                         lesionScores[image.image_url] = data.value
