@@ -41,7 +41,7 @@ const Results = props => {
                     setHealingScores(JSON.parse(healingData))
                 }
             }
-            Axios.get(`http://127.0.0.1:8000/api/training/lesionScore/`).then(
+            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`).then(
                 result => {
                     if (result.data) {
                         setAllScores(result.data)
@@ -69,7 +69,7 @@ const Results = props => {
                         }
                         setChartData(scoresDict)
                     }
-                    Axios.get(`http://127.0.0.1:8000/api/training/healingScore/`).then(
+                    Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`).then(
                         result => {
                             if (result.data) {
                                 setAllHealingScores(result.data)
@@ -96,7 +96,6 @@ const Results = props => {
                                         }
                                     }
                                 }
-                                console.log(healingScoresDict)
                                 setHealingChartData(healingScoresDict)
                                 setIsLoaded(true)
                             }
@@ -122,15 +121,13 @@ const Results = props => {
             {isLoaded ? (
                 <Card.Group itemsPerRow={5}>
                     {images.map(image => {
-                        console.log("chart data: ", chartData)
-                        // console.log(healingChartData)
                         return (
                             <Card>
                                 <Image src={image.image_url} />
                                 <Card.Content>
                                     {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
                                         return lesion_type.name
-                                    }) ? (
+                                    }).sort().join(', ') ? (
                                             <Card.Description style={{
                                                 color: "green"
                                             }}>Your lesion score: {scores[image.image_url]}</Card.Description>
@@ -148,14 +145,22 @@ const Results = props => {
                                             <Card.Description style={{
                                                 color: "green"
                                             }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        ) : "Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
                                             return lesion_type.name
-                                        }) && healingScores[image.image_url] != image.healing_type.degree ? (
+                                        }) && healingScores.hasOwnProperty(image.image_url) && healingScores[image.image_url] != image.healing_type.degree) ? (
                                                 <Card.Description style={{
                                                     color: "red"
                                                 }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
+                                        ) : ("Absence of pathological lesions" == image.lesion_types.map(function (lesion_type) {
+                                            return lesion_type.name
+                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? (
+                                                <Card.Description style={{
+                                                    color: "green"
+                                                }}>Your healing score: N/A</Card.Description>
                                         ) : (
-                                                <Card.Description>Your healing score: N/A</Card.Description>
+                                                <Card.Description style={{
+                                                    color: "red"
+                                                }}>Your healing score: N/A</Card.Description>
                                         )}
                                     {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
                                         return lesion_type.name

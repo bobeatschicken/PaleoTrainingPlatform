@@ -10,11 +10,11 @@ const References = props => {
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://127.0.0.1:8000/api/training/lesionReference/`).then(
+      Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionReference/`).then(
         result => {
           setLesionReferences(result.data);
           if (result.data) {
-            Axios.get(`http://127.0.0.1:8000/api/training/healingReference/`).then(
+            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingReference/`).then(
               response => {
                 setHealingReferences(response.data)
                 if (response.data) {
