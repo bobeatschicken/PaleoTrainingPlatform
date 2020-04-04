@@ -141,26 +141,32 @@ const Results = props => {
                                     }).sort().join(', ')}</Card.Description>
                                     {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
                                         return lesion_type.name
-                                    }) && healingScores[image.image_url] == image.healing_type.degree ? (
+                                    }) && healingScores[image.image_url] == image.healing_type.degree ? ( //answer is not type 0 and your answer was not type 0 and you got the correct healing score
                                             <Card.Description style={{
                                                 color: "green"
                                             }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) { //answer is not type 0 and your answer was not type 0 and you got the wrong healing score
                                             return lesion_type.name
                                         }) && healingScores.hasOwnProperty(image.image_url) && healingScores[image.image_url] != image.healing_type.degree) ? (
                                                 <Card.Description style={{
                                                     color: "red"
                                                 }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        ) : ("Absence of pathological lesions" == image.lesion_types.map(function (lesion_type) {
-                                            return lesion_type.name
-                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? (
-                                                <Card.Description style={{
-                                                    color: "green"
-                                                }}>Your healing score: N/A</Card.Description>
-                                        ) : (
+                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) { //answer is not type 0 and your answer was not type 0 and you got the wrong healing score
+                                                return lesion_type.name
+                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? ( //answer is not type 0 and your answer was type 0
                                                 <Card.Description style={{
                                                     color: "red"
                                                 }}>Your healing score: N/A</Card.Description>
+                                        ) : ("Absence of pathological lesions" == image.lesion_types.map(function (lesion_type) {
+                                            return lesion_type.name
+                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? ( //answer is type 0 and your answer was type 0
+                                                <Card.Description style={{
+                                                    color: "green"
+                                                }}>Your healing score: N/A</Card.Description>
+                                        ) : ( //answer is type 0 and your answer was not type 0
+                                                <Card.Description style={{
+                                                    color: "red"
+                                                }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
                                         )}
                                     {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
                                         return lesion_type.name
