@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Label, Dropdown, Grid } from "semantic-ui-react";
+import { Loader, Label, Dropdown, Grid, Header } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import Axios from "axios";
 
@@ -35,7 +35,7 @@ const References = props => {
     <div>
       {isLoaded ? (
         <div>
-          <h2>Lesion Reference Images</h2>
+          <Header size="medium">Lesion Expression (Gardner and Jakob, 2019)</Header>
           {lesionReferences.map(lesionReference => {
             return (
               <div>
@@ -88,7 +88,8 @@ const References = props => {
           })}
           <br />
           <br />
-          <h2>Healing Reference Images</h2>
+          <Header size="medium">Lesion Activity
+          <a href="https://doi.org/10.1007/s12520-019-00780-0"> (Rinaldo et al., 2019)</a></Header>
           {healingReferences.map(healingReference => {
             return (
               <div>

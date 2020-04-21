@@ -6,16 +6,6 @@ import { Segment, GridColumn, Header, Grid } from "semantic-ui-react";
 import "react-splitter-layout/lib/index.css";
 
 const ImageForm = props => {
-  // return (
-  //     <SplitterLayout percentage secondaryInitialSize={25} secondaryMinSize={25}>
-  //       <div className="my-pane">
-  //         <ImageScoring />
-  //       </div>
-  //       <div className="my-pane">
-  //         <References />
-  //       </div>
-  //     </SplitterLayout>
-  //   );
   return (
     <Segment style={{
       height: "100vh",
