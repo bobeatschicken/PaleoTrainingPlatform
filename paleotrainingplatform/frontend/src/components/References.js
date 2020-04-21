@@ -7,14 +7,15 @@ const References = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [lesionReferences, setLesionReferences] = useState(null);
   const [healingReferences, setHealingReferences] = useState(null)
+  const BASE_URL = "http://127.0.0.1:8000"
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionReference/`).then(
+      Axios.get(`${BASE_URL}/api/training/lesionReference/`).then(
         result => {
           setLesionReferences(result.data);
           if (result.data) {
-            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingReference/`).then(
+            Axios.get(`${BASE_URL}/api/training/healingReference/`).then(
               response => {
                 setHealingReferences(response.data)
                 if (response.data) {

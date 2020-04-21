@@ -17,6 +17,7 @@ const Results = props => {
     const [healingScores, setHealingScores] = useState(null)
     const [allHealingScores, setAllHealingScores] = useState(null)
     const [healingChartData, setHealingChartData] = useState(null)
+    const BASE_URL = "http://127.0.0.1:8000"
 
     useEffect(() => {
         if (!isLoaded) {
@@ -41,7 +42,7 @@ const Results = props => {
                     setHealingScores(JSON.parse(healingData))
                 }
             }
-            Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`).then(
+            Axios.get(`${BASE_URL}/api/training/lesionScore/`).then(
                 result => {
                     if (result.data) {
                         setAllScores(result.data)
@@ -69,7 +70,7 @@ const Results = props => {
                         }
                         setChartData(scoresDict)
                     }
-                    Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`).then(
+                    Axios.get(`${BASE_URL}/api/training/healingScore/`).then(
                         result => {
                             if (result.data) {
                                 setAllHealingScores(result.data)

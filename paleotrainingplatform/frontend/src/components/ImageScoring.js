@@ -13,6 +13,7 @@ const ImageScoring = props => {
   const [checked, setChecked] = useState({});
   const [resultDict, setResultDict] = useState({})
   const [showHealingOptions, setShowHealingOptions] = useState(new Map())
+  const BASE_URL = "http://127.0.0.1:8000"
   const lesionTypeOptions = [
     { value: "Absence of pathological lesions", text: "Absence of pathological lesions" },
     { value: "Type A", text: "Type A" },
@@ -33,7 +34,7 @@ const ImageScoring = props => {
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionImage/`).then(
+      Axios.get(`${BASE_URL}/api/training/lesionImage/`).then(
         result => {
           if (result.data) {
             setImages(result.data);
@@ -62,7 +63,7 @@ const ImageScoring = props => {
       resultDict[imageURL] = type
     }
     for (const [imageURL, type] of Object.entries(resultDict)) {
-      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/lesionScore/`, {
+      Axios.post(`${BASE_URL}/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type
       }).then(function (response) {
@@ -73,7 +74,7 @@ const ImageScoring = props => {
         })
     }
     for (const [imageURL, degree] of Object.entries(healingScores)) {
-      Axios.post(`http://paleotrainingplatform.pythonanywhere.com/api/training/healingScore/`, {
+      Axios.post(`${BASE_URL}/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree
       }).then(function (response) {
