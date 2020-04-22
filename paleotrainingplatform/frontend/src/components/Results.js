@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
     Card,
     Loader,
-    Image
+    Image,
+    Segment,
+    Grid,
+    GridColumn
 } from "semantic-ui-react";
 import Axios from "axios";
 import Chart from "react-google-charts";
@@ -120,79 +123,74 @@ const Results = props => {
     return (
         <div>
             {isLoaded ? (
-                <Card.Group itemsPerRow={5}>
-                    {images.map(image => {
-                        return (
-                            <Card>
-                                <Image src={image.image_url} />
-                                <Card.Content>
-                                    {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
-                                        return lesion_type.name
-                                    }).sort().join(', ') ? (
-                                            <Card.Description style={{
-                                                color: "green"
-                                            }}>Your lesion score: {scores[image.image_url]}</Card.Description>
-                                        ) : (
-                                            <Card.Description style={{
-                                                color: "red"
-                                            }}>Your lesion score: {scores[image.image_url]}</Card.Description>
-                                        )}
-                                    <Card.Description>Original observer's lesion score: {image.lesion_types.map(function (lesion_type) {
-                                        return lesion_type.name
-                                    }).sort().join(', ')}</Card.Description>
-                                    {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
-                                        return lesion_type.name
-                                    }) && healingScores[image.image_url] == image.healing_type.degree ? ( //answer is not type 0 and your answer was not type 0 and you got the correct healing score
-                                            <Card.Description style={{
-                                                color: "green"
-                                            }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) { //answer is not type 0 and your answer was not type 0 and you got the wrong healing score
-                                            return lesion_type.name
-                                        }) && healingScores.hasOwnProperty(image.image_url) && healingScores[image.image_url] != image.healing_type.degree) ? (
-                                                <Card.Description style={{
-                                                    color: "red"
-                                                }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        ) : ("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) { //answer is not type 0 and your answer was not type 0 and you got the wrong healing score
-                                                return lesion_type.name
-                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? ( //answer is not type 0 and your answer was type 0
-                                                <Card.Description style={{
-                                                    color: "red"
-                                                }}>Your healing score: N/A</Card.Description>
-                                        ) : ("Absence of pathological lesions" == image.lesion_types.map(function (lesion_type) {
-                                            return lesion_type.name
-                                        }) && !healingScores.hasOwnProperty(image.image_url)) ? ( //answer is type 0 and your answer was type 0
-                                                <Card.Description style={{
-                                                    color: "green"
-                                                }}>Your healing score: N/A</Card.Description>
-                                        ) : ( //answer is type 0 and your answer was not type 0
-                                                <Card.Description style={{
-                                                    color: "red"
-                                                }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
-                                        )}
-                                    {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
-                                        return lesion_type.name
-                                    }) ? (
-                                        <Card.Description>Original observer's healing score: {image.healing_type.degree}</Card.Description>
-                                    ) : (
-                                        <Card.Description>Original observer's healing score: N/A</Card.Description>
-                                    )}
-                                </Card.Content>
-                                <Chart
-                                    chartType="ColumnChart"
-                                    width="100%"
-                                    column="100%"
-                                    data={chartData[image.image_url]}
-                                />
-                                <Chart
-                                    chartType="ColumnChart"
-                                    width="100%"
-                                    column="100%"
-                                    data={healingChartData[image.image_url]}
-                                />
-                            </Card>
-                        )
-                    })}
-                </Card.Group>
+                <Segment style={{
+                    height: "100vh",
+                    marginTop: "10px",
+                    marginBottom: "10px"
+                }}>
+                    <Grid columns={1} relaxed="very" divided style={{ height: "100%" }}>
+                        <GridColumn width={16} style={{ height: "100%", overflowY: "scroll" }}>
+                            <Card.Group itemsPerRow={5}>
+                                {images.map(image => {
+                                    return (
+                                        <Card>
+                                            <Image src={image.image_url} />
+                                            <Card.Content>
+                                                {scores[image.image_url] == image.lesion_types.map(function (lesion_type) {
+                                                    return lesion_type.name
+                                                }).sort().join(', ') ? (
+                                                        <Card.Description style={{
+                                                            color: "green"
+                                                        }}>Your lesion score: {scores[image.image_url]}</Card.Description>
+                                                    ) : (
+                                                        <Card.Description style={{
+                                                            color: "red"
+                                                        }}>Your lesion score: {scores[image.image_url]}</Card.Description>
+                                                    )}
+                                                <Card.Description>Original observer's lesion score: {image.lesion_types.map(function (lesion_type) {
+                                                    return lesion_type.name
+                                                }).sort().join(', ')}</Card.Description>
+                                                
+                                                {("Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                                    return lesion_type.name
+                                                }) && healingScores[image.image_url] == image.healing_type.degree) || ("Absence of pathological lesions" == image.lesion_types.map(function (lesion_type) {
+                                                    return lesion_type.name
+                                                }) && healingScores[image.image_url] == "N/A") ? (
+                                                        <Card.Description style={{
+                                                            color: "green"
+                                                        }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
+                                                ) : (
+                                                        <Card.Description style={{
+                                                            color: "red"
+                                                        }}>Your healing score: {healingScores[image.image_url]}</Card.Description>
+                                                )}
+                                                {"Absence of pathological lesions" != image.lesion_types.map(function (lesion_type) {
+                                                    return lesion_type.name
+                                                }) ? (
+                                                    <Card.Description>Original observer's healing score: {image.healing_type.degree}</Card.Description>
+                                                ) : (
+                                                    <Card.Description>Original observer's healing score: N/A</Card.Description>
+                                                )}
+                                            </Card.Content>
+                                            <Chart
+                                                chartType="ColumnChart"
+                                                width="100%"
+                                                column="100%"
+                                                data={chartData[image.image_url]}
+                                            />
+                                            <Chart
+                                                chartType="ColumnChart"
+                                                width="100%"
+                                                column="100%"
+                                                data={healingChartData[image.image_url]}
+                                            />
+                                        </Card>
+                                    )
+                                })}
+                            </Card.Group>
+                        </GridColumn>
+                    </Grid>
+                </Segment>
             ) : (
                     <Loader active />
                 )

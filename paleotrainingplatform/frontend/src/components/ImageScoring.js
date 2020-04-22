@@ -12,7 +12,7 @@ const ImageScoring = props => {
   const [showCheckBox, setShowCheckBox] = useState(new Map())
   const [checked, setChecked] = useState({});
   const [resultDict, setResultDict] = useState({})
-  const [showHealingOptions, setShowHealingOptions] = useState(new Map())
+  const [lesionSelected, setLesionSelected] = useState(new Map())
   const BASE_URL = "http://127.0.0.1:8000"
   const lesionTypeOptions = [
     { value: "Absence of pathological lesions", text: "Absence of pathological lesions" },
@@ -26,11 +26,14 @@ const ImageScoring = props => {
   ]
   const [lesionTypes, setLesionTypes] = useState(null);
   const lesionActivityOptions = [
+    { value: "N/A", text: "N/A" },
     { value: "1", text: "1" },
     { value: "2", text: "2" },
     { value: "3", text: "3" },
     { value: "4", text: "4" }
   ];
+  Axios.defaults.xsrfCookieName = 'csrftoken';
+  Axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 
   useEffect(() => {
     if (!isLoaded) {
@@ -48,7 +51,7 @@ const ImageScoring = props => {
   }, [isLoaded]);
 
   function handleSubmit() {
-    var temp
+
     for (const [imageURL, scoresDict] of Object.entries(checked)) {
       var types = []
       for (const [type, value] of Object.entries(scoresDict)) {
@@ -65,7 +68,8 @@ const ImageScoring = props => {
     for (const [imageURL, type] of Object.entries(resultDict)) {
       Axios.post(`${BASE_URL}/api/training/lesionScore/`, {
         image_url: imageURL,
-        score: type
+        score: type,
+        csrfmiddlewaretoken: window.CSRF_TOKEN
       }).then(function (response) {
         console.log(response)
       })
@@ -76,7 +80,8 @@ const ImageScoring = props => {
     for (const [imageURL, degree] of Object.entries(healingScores)) {
       Axios.post(`${BASE_URL}/api/training/healingScore/`, {
         image_url: imageURL,
-        score: degree
+        score: degree,
+        csrfmiddlewaretoken: window.CSRF_TOKEN
       }).then(function (response) {
         console.log(response)
       })
@@ -152,18 +157,18 @@ const ImageScoring = props => {
                       if (data.value == "Multiple") {
                         delete lesionScores[image.image_url]
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, true)))
-                        setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, true)))
+                        setLesionSelected(new Map(lesionSelected.set(image.image_url, true)))
                       } else if (data.value == "Absence of pathological lesions") {
                         delete healingScores[image.image_url]
                         delete lesionScores[image.image_url]
                         lesionScores[image.image_url] = data.value
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, false)))
-                        setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, false)))
+                        setLesionSelected(new Map(lesionSelected.set(image.image_url, false)))
                       } else {
                         delete checked[image.image_url]
                         lesionScores[image.image_url] = data.value
                         setShowCheckBox(new Map(showCheckBox.set(image.image_url, false)))
-                        setShowHealingOptions(new Map(showHealingOptions.set(image.image_url, true)))
+                        setLesionSelected(new Map(lesionSelected.set(image.image_url, true)))
                       }
                     }}
                     options={lesionTypeOptions}
@@ -190,27 +195,24 @@ const ImageScoring = props => {
                 }
                 <br />
                 <br />
-                {showHealingOptions.get(image.image_url) &&
-                  <div>
-                    <Grid centered>
-                      <Label size="big">
-                        b) Which category best describes the activity state of the lesion above?
+                <Grid centered>
+                  <Label size="big">
+                    b) Which category best describes the activity state of the lesion above?
                       </Label>
-                    </Grid>
-                    <br />
-                    <br />
-                    <Grid centered>
-                      <Form.Select
-                        fluid
-                        name={image.image_url + " healing score"}
-                        options={lesionActivityOptions}
-                        onChange={(e, data) => {
-                          healingScores[image.image_url] = data.value
-                        }}
-                      />
-                    </Grid>
-                  </div>
-                }
+                </Grid>
+                <br />
+                <br />
+                <Grid centered>
+                  <Form.Select
+                    fluid
+                    name={image.image_url + " healing score"}
+                    options={lesionActivityOptions}
+                    onChange={(e, data) => {
+                      healingScores[image.image_url] = data.value
+                    }}
+                  />
+                </Grid>
+
                 <br />
                 <br />
               </div>

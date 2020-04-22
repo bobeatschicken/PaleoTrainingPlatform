@@ -124,7 +124,7 @@ const References = props => {
                 />
                 <Grid centered>
                   <Label size="small">
-                    <b>Degree of Expression: </b>
+                    <b>Degree of Healing: </b>
                     {healingReference.healing_type.degree}
                   </Label>
                 </Grid>
