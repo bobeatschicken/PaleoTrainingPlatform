@@ -5,10 +5,14 @@ import {
     Image,
     Segment,
     Grid,
-    GridColumn
+    GridColumn,
+    Button,
+    Form
 } from "semantic-ui-react";
 import Axios from "axios";
 import Chart from "react-google-charts";
+import { Link } from "react-router-dom";
+
 
 const Results = props => {
 
@@ -190,6 +194,13 @@ const Results = props => {
                             </Card.Group>
                         </GridColumn>
                     </Grid>
+                        <Link to={{
+                            pathname: "/",
+                        }}>
+                            <Form.Button style={{
+                                marginLeft: '46%'
+                            }}>Quiz me again</Form.Button>
+                        </Link>
                 </Segment>
             ) : (
                     <Loader active />
