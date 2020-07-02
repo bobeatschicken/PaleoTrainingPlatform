@@ -4,145 +4,155 @@ import ReactImageMagnify from "react-image-magnify";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 
-const ImageScoring = props => {
+const ImageScoring = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [images, setImages] = useState(null);
-  const [lesionScores, setLesionScores] = useState({})
-  const [healingScores, setHealingScores] = useState({})
-  const [showCheckBox, setShowCheckBox] = useState(new Map())
+  const [lesionScores, setLesionScores] = useState({});
+  const [healingScores, setHealingScores] = useState({});
+  const [showCheckBox, setShowCheckBox] = useState(new Map());
   const [checked, setChecked] = useState({});
-  const [resultDict, setResultDict] = useState({})
-  const [lesionSelected, setLesionSelected] = useState(new Map())
-  const BASE_URL = "http://127.0.0.1:8000"
+  const [resultDict, setResultDict] = useState({});
+  const [lesionSelected, setLesionSelected] = useState(new Map());
+  const BASE_URL = "http://127.0.0.1:8000";
   const lesionTypeOptions = [
-    { value: "Absence of pathological lesions", text: "Absence of pathological lesions" },
+    {
+      value: "Absence of pathological lesions",
+      text: "Absence of pathological lesions",
+    },
     { value: "Type A", text: "Type A" },
     { value: "Type B", text: "Type B" },
     { value: "Type C", text: "Type C" },
     { value: "Type D", text: "Type D" },
     { value: "Type E1", text: "Type E1" },
     { value: "Type E2", text: "Type E2" },
-    { value: "Multiple", text: "More than one lesion type present" }
-  ]
+    { value: "Multiple", text: "More than one lesion type present" },
+  ];
   const [lesionTypes, setLesionTypes] = useState(null);
   const lesionActivityOptions = [
     { value: "N/A", text: "N/A" },
     { value: "1", text: "1" },
     { value: "2", text: "2" },
     { value: "3", text: "3" },
-    { value: "4", text: "4" }
+    { value: "4", text: "4" },
   ];
-  Axios.defaults.xsrfCookieName = 'csrftoken';
-  Axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+  Axios.defaults.xsrfCookieName = "csrftoken";
+  Axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`${BASE_URL}/api/training/lesionImage/`).then(
-        result => {
+      Axios.get(`${BASE_URL}/api/training/lesionImage/`)
+        .then((result) => {
           if (result.data) {
             setImages(result.data);
             setIsLoaded(true);
           }
-        }
-      ).catch(function (error) {
-        console.log(error)
-      })
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }, [isLoaded]);
 
   function handleSubmit() {
-
     for (const [imageURL, scoresDict] of Object.entries(checked)) {
-      var types = []
+      var types = [];
       for (const [type, value] of Object.entries(scoresDict)) {
         if (value) {
-          types.push(type)
+          types.push(type);
         }
       }
-      types.sort()
-      resultDict[imageURL] = types.join(', ')
+      types.sort();
+      resultDict[imageURL] = types.join(", ");
     }
     for (const [imageURL, type] of Object.entries(lesionScores)) {
-      resultDict[imageURL] = type
+      resultDict[imageURL] = type;
     }
     for (const [imageURL, type] of Object.entries(resultDict)) {
       Axios.post(`${BASE_URL}/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type,
-        csrfmiddlewaretoken: window.CSRF_TOKEN
-      }).then(function (response) {
-        console.log(response)
+        csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
-        .catch(function (error) {
-          console.log(error)
+        .then(function (response) {
+          console.log(response);
         })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
     for (const [imageURL, degree] of Object.entries(healingScores)) {
       Axios.post(`${BASE_URL}/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree,
-        csrfmiddlewaretoken: window.CSRF_TOKEN
-      }).then(function (response) {
-        console.log(response)
+        csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
-        .catch(function (error) {
-          console.log(error)
+        .then(function (response) {
+          console.log(response);
         })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 
   const checkboxChangeHandler = (data) => {
-    const imageURL = data.name
-    const typeOption = data.label
-    const value = data.checked
+    const imageURL = data.name;
+    const typeOption = data.label;
+    const value = data.checked;
 
     if (imageURL in checked) {
-      checked[imageURL][typeOption] = value
+      checked[imageURL][typeOption] = value;
     } else {
-      var nestedDict = { [typeOption]: value }
-      checked[imageURL] = nestedDict
+      var nestedDict = { [typeOption]: value };
+      checked[imageURL] = nestedDict;
     }
-  }
+  };
 
   return (
     <div>
       {isLoaded ? (
         <Form>
-          {images.map(image => {
+          {images.map((image) => {
             return (
               <div>
                 <h2
                   style={{
-                    marginLeft: "17%"
+                    marginLeft: "17%",
                   }}
                 >
                   {image.id})
                 </h2>
+
                 <ReactImageMagnify
                   style={{
                     display: "block",
                     marginLeft: "auto",
                     marginRight: "auto",
                     marginBottom: "50px",
-                    marginTop: "50px"
+                    marginTop: "50px",
                   }}
                   enlargedImagePosition="over"
                   {...{
                     smallImage: {
                       src: image.image_url,
                       width: 900,
-                      height: 600
+                      height: 600,
                     },
                     largeImage: {
                       src: image.image_url,
                       width: 1800,
-                      height: 1200
-                    }
+                      height: 1200,
+                    },
                   }}
                 />
                 <Grid centered>
+                  Age: {image.age}
+                  Sex: {image.sex}
+                  Site: {image.site}
+                  Time Period: {image.time_period}
                   <Label size="big">
-                    a) To which category is the orbital lesion above most appropriately assigned?
+                    a) To which category is the orbital lesion above most
+                    appropriately assigned?
                   </Label>
                 </Grid>
                 <br />
@@ -150,25 +160,39 @@ const ImageScoring = props => {
                 <Grid centered>
                   <Form.Select
                     style={{
-                      clear: 'both'
+                      clear: "both",
                     }}
                     fluid
                     onChange={(e, data) => {
                       if (data.value == "Multiple") {
-                        delete lesionScores[image.image_url]
-                        setShowCheckBox(new Map(showCheckBox.set(image.image_url, true)))
-                        setLesionSelected(new Map(lesionSelected.set(image.image_url, true)))
-                      } else if (data.value == "Absence of pathological lesions") {
-                        delete healingScores[image.image_url]
-                        delete lesionScores[image.image_url]
-                        lesionScores[image.image_url] = data.value
-                        setShowCheckBox(new Map(showCheckBox.set(image.image_url, false)))
-                        setLesionSelected(new Map(lesionSelected.set(image.image_url, false)))
+                        delete lesionScores[image.image_url];
+                        setShowCheckBox(
+                          new Map(showCheckBox.set(image.image_url, true))
+                        );
+                        setLesionSelected(
+                          new Map(lesionSelected.set(image.image_url, true))
+                        );
+                      } else if (
+                        data.value == "Absence of pathological lesions"
+                      ) {
+                        delete healingScores[image.image_url];
+                        delete lesionScores[image.image_url];
+                        lesionScores[image.image_url] = data.value;
+                        setShowCheckBox(
+                          new Map(showCheckBox.set(image.image_url, false))
+                        );
+                        setLesionSelected(
+                          new Map(lesionSelected.set(image.image_url, false))
+                        );
                       } else {
-                        delete checked[image.image_url]
-                        lesionScores[image.image_url] = data.value
-                        setShowCheckBox(new Map(showCheckBox.set(image.image_url, false)))
-                        setLesionSelected(new Map(lesionSelected.set(image.image_url, true)))
+                        delete checked[image.image_url];
+                        lesionScores[image.image_url] = data.value;
+                        setShowCheckBox(
+                          new Map(showCheckBox.set(image.image_url, false))
+                        );
+                        setLesionSelected(
+                          new Map(lesionSelected.set(image.image_url, true))
+                        );
                       }
                     }}
                     options={lesionTypeOptions}
@@ -176,29 +200,32 @@ const ImageScoring = props => {
                 </Grid>
                 <br />
                 <br />
-                {showCheckBox.get(image.image_url) &&
+                {showCheckBox.get(image.image_url) && (
                   <Grid centered>
-                    <label>Please select multiple lesion types if applicable:</label>
-                    {lesionTypeOptions.slice(1, 7).map(option => {
+                    <label>
+                      Please select multiple lesion types if applicable:
+                    </label>
+                    {lesionTypeOptions.slice(1, 7).map((option) => {
                       return (
                         <Checkbox
                           style={{
-                            marginLeft: "10px"
+                            marginLeft: "10px",
                           }}
                           label={option.text}
                           name={image.image_url}
                           onChange={(e, data) => checkboxChangeHandler(data)}
                         />
-                      )
+                      );
                     })}
                   </Grid>
-                }
+                )}
                 <br />
                 <br />
                 <Grid centered>
                   <Label size="big">
-                    b) Which category best describes the activity state of the lesion above?
-                      </Label>
+                    b) Which category best describes the activity state of the
+                    lesion above?
+                  </Label>
                 </Grid>
                 <br />
                 <br />
@@ -208,7 +235,7 @@ const ImageScoring = props => {
                     name={image.image_url + " healing score"}
                     options={lesionActivityOptions}
                     onChange={(e, data) => {
-                      healingScores[image.image_url] = data.value
+                      healingScores[image.image_url] = data.value;
                     }}
                   />
                 </Grid>
@@ -219,21 +246,23 @@ const ImageScoring = props => {
             );
           })}
           <Grid centered>
-            <Link to={{
-              pathname: "/results",
-              state: {
-                scores: resultDict,
-                lesionImages: images,
-                healingResult: healingScores
-              }
-            }}>
+            <Link
+              to={{
+                pathname: "/results",
+                state: {
+                  scores: resultDict,
+                  lesionImages: images,
+                  healingResult: healingScores,
+                },
+              }}
+            >
               <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
             </Link>
           </Grid>
         </Form>
       ) : (
-          <Loader active />
-        )}
+        <Loader active />
+      )}
     </div>
   );
 };

@@ -41,6 +41,10 @@ class LesionImage(models.Model):
     lesion_types = models.ManyToManyField(LesionType)
     healing_type = models.ForeignKey(
         HealingType, on_delete=models.CASCADE, null=True)
+    age = models.CharField(max_length=256)
+    sex = models.CharField(max_length=256)
+    site = models.CharField(max_length=256)
+    time_period = models.CharField(max_length=256)
 
     def __str__(self):
         return self.image_url
