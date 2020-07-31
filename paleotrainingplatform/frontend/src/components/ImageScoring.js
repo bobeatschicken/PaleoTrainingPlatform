@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Loader, Label, Grid, Form, Checkbox } from "semantic-ui-react";
+import {
+  Loader,
+  Label,
+  Grid,
+  Form,
+  Checkbox,
+  Segment,
+  Button,
+} from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import { Link } from "react-router-dom";
 import Axios from "axios";
@@ -13,6 +21,8 @@ const ImageScoring = (props) => {
   const [checked, setChecked] = useState({});
   const [resultDict, setResultDict] = useState({});
   const [lesionSelected, setLesionSelected] = useState(new Map());
+  const [educationLevel, setEducationLevel] = useState(null);
+  const [timesTaken, setTimesTaken] = useState(null);
   const BASE_URL = "http://127.0.0.1:8000";
   const lesionTypeOptions = [
     {
@@ -27,7 +37,6 @@ const ImageScoring = (props) => {
     { value: "Type E2", text: "Type E2" },
     { value: "Multiple", text: "More than one lesion type present" },
   ];
-  const [lesionTypes, setLesionTypes] = useState(null);
   const lesionActivityOptions = [
     { value: "N/A", text: "N/A" },
     { value: "1", text: "1" },
@@ -35,6 +44,23 @@ const ImageScoring = (props) => {
     { value: "3", text: "3" },
     { value: "4", text: "4" },
   ];
+  const statusOptions = [
+    { value: "Undergraduate", text: "Undergraduate" },
+    { value: "MA student", text: "MA student" },
+    { value: "post-MA PhD student", text: "post-MA PhD student" },
+    { value: "post-PhD academic", text: "post-PhD academic" },
+    { value: "post-MA non-academic", text: "post-MA non-academic" },
+    { value: "post-PhD non-academic", text: "post-PhD non-academic" },
+  ];
+
+  const timesCompleted = [
+    { value: "First Time", text: "First Time" },
+    { value: "2-5", text: "2-5" },
+    { value: "6-10", text: "6-10" },
+    { value: "10-15", text: "10-15" },
+    { value: "16+", text: "16+" },
+  ];
+
   Axios.defaults.xsrfCookieName = "csrftoken";
   Axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
@@ -95,6 +121,50 @@ const ImageScoring = (props) => {
     }
   }
 
+  function handleSubmitDisplay() {
+    if (
+      educationLevel &&
+      timesTaken &&
+      Object.keys(lesionScores).length + Object.keys(checked).length ===
+        images.length &&
+      Object.keys(lesionScores).length === Object.keys(healingScores).length
+    ) {
+      console.log(lesionScores);
+      console.log(checked);
+      console.log(
+        Object.keys(lesionScores).length + Object.keys(checked).length
+      );
+      console.log(images.length);
+      return (
+        <Link
+          to={{
+            pathname: "/results",
+            state: {
+              scores: resultDict,
+              lesionImages: images,
+              healingResult: healingScores,
+            },
+          }}
+        >
+          <Form.Button positive onClick={() => handleSubmit()}>
+            Submit
+          </Form.Button>
+        </Link>
+      );
+    } else {
+      console.log(
+        Object.keys(lesionScores).length + Object.keys(checked).length
+      );
+      console.log(images.length);
+      console.log(Object.keys(healingScores).length);
+      return (
+        <Form.Button negative disabled>
+          Submit
+        </Form.Button>
+      );
+    }
+  }
+
   const checkboxChangeHandler = (data) => {
     const imageURL = data.name;
     const typeOption = data.label;
@@ -106,12 +176,59 @@ const ImageScoring = (props) => {
       var nestedDict = { [typeOption]: value };
       checked[imageURL] = nestedDict;
     }
+    setChecked(checked);
   };
 
   return (
     <div>
       {isLoaded ? (
         <Form>
+          <h1
+            style={{
+              marginLeft: "17%",
+            }}
+          >
+            Preliminary Questions:
+          </h1>
+          <br />
+          <Grid centered>
+            <Label size="big">
+              Which of the following best describes your
+              educational/professional status?
+            </Label>
+          </Grid>
+          <br />
+          <br />
+          <Grid centered>
+            <Form.Select
+              style={{
+                clear: "both",
+              }}
+              options={statusOptions}
+              onChange={(e, data) => {
+                setEducationLevel(data.value);
+              }}
+            />
+          </Grid>
+          <br />
+          <br />
+          <Grid centered>
+            <Label size="big">
+              Approximately how many times have you completed the orbital roof
+              lesion scoring exercise?
+            </Label>
+          </Grid>
+          <br />
+          <br />
+          <Grid centered>
+            <Form.Select
+              options={timesCompleted}
+              onChange={(e, data) => {
+                setTimesTaken(data.value);
+              }}
+            />
+          </Grid>
+          <br />
           {images.map((image) => {
             return (
               <div>
@@ -122,7 +239,6 @@ const ImageScoring = (props) => {
                 >
                   {image.id})
                 </h2>
-
                 <ReactImageMagnify
                   style={{
                     display: "block",
@@ -147,9 +263,16 @@ const ImageScoring = (props) => {
                 />
                 <Grid centered>
                   Age: {image.age}
+                  <br />
                   Sex: {image.sex}
+                  <br />
                   Site: {image.site}
+                  <br />
                   Time Period: {image.time_period}
+                </Grid>
+                <br />
+                <br />
+                <Grid centered>
                   <Label size="big">
                     a) To which category is the orbital lesion above most
                     appropriately assigned?
@@ -162,7 +285,6 @@ const ImageScoring = (props) => {
                     style={{
                       clear: "both",
                     }}
-                    fluid
                     onChange={(e, data) => {
                       if (data.value == "Multiple") {
                         delete lesionScores[image.image_url];
@@ -194,6 +316,8 @@ const ImageScoring = (props) => {
                           new Map(lesionSelected.set(image.image_url, true))
                         );
                       }
+                      const newLesionScores = { ...lesionScores };
+                      setLesionScores(newLesionScores);
                     }}
                     options={lesionTypeOptions}
                   />
@@ -231,11 +355,12 @@ const ImageScoring = (props) => {
                 <br />
                 <Grid centered>
                   <Form.Select
-                    fluid
                     name={image.image_url + " healing score"}
                     options={lesionActivityOptions}
                     onChange={(e, data) => {
                       healingScores[image.image_url] = data.value;
+                      const newHealingScores = { ...healingScores };
+                      setHealingScores(newHealingScores);
                     }}
                   />
                 </Grid>
@@ -245,20 +370,7 @@ const ImageScoring = (props) => {
               </div>
             );
           })}
-          <Grid centered>
-            <Link
-              to={{
-                pathname: "/results",
-                state: {
-                  scores: resultDict,
-                  lesionImages: images,
-                  healingResult: healingScores,
-                },
-              }}
-            >
-              <Form.Button onClick={() => handleSubmit()}>Submit</Form.Button>
-            </Link>
-          </Grid>
+          <Grid centered>{handleSubmitDisplay()}</Grid>
         </Form>
       ) : (
         <Loader active />
