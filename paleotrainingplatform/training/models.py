@@ -30,7 +30,7 @@ class LesionScore(models.Model):
 
 class HealingScore(models.Model):
     image_url = models.CharField(max_length=256)
-    score = models.CharField(max_length=1)
+    score = models.CharField(max_length=3)
 
     def __str__(self):
         return self.image_url + " : " + self.score
@@ -41,6 +41,13 @@ class LesionImage(models.Model):
     lesion_types = models.ManyToManyField(LesionType)
     healing_type = models.ForeignKey(
         HealingType, on_delete=models.CASCADE, null=True)
+    age = models.CharField(max_length=256)
+    sex = models.CharField(max_length=256)
+    site = models.CharField(max_length=256)
+    time_period = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.image_url
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
@@ -52,6 +59,9 @@ class LesionReference(models.Model):
         LesionType, on_delete=models.CASCADE, null=True)
     image_url = models.ImageField(unique=True)
 
+    def __str__(self):
+        return self.image_url
+
     def delete(self, *args, **kwargs):
         self.image_url.delete()
         super().delete(*args, **kwargs)
@@ -61,6 +71,9 @@ class HealingReference(models.Model):
     healing_type = models.ForeignKey(
         HealingType, on_delete=models.CASCADE, null=True)
     image_url = models.ImageField(unique=True)
+
+    def __str__(self):
+        return image_url
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
