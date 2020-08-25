@@ -97,6 +97,8 @@ const ImageScoring = (props) => {
       Axios.post(`${BASE_URL}/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type,
+        education_level: educationLevel,
+        times_taken: timesTaken,
         csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
         .then(function (response) {
@@ -110,6 +112,8 @@ const ImageScoring = (props) => {
       Axios.post(`${BASE_URL}/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree,
+        education_level: educationLevel,
+        times_taken: timesTaken,
         csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
         .then(function (response) {
@@ -127,14 +131,9 @@ const ImageScoring = (props) => {
       timesTaken &&
       Object.keys(lesionScores).length + Object.keys(checked).length ===
         images.length &&
-      Object.keys(lesionScores).length === Object.keys(healingScores).length
+      Object.keys(lesionScores).length + Object.keys(checked).length ===
+        Object.keys(healingScores).length
     ) {
-      console.log(lesionScores);
-      console.log(checked);
-      console.log(
-        Object.keys(lesionScores).length + Object.keys(checked).length
-      );
-      console.log(images.length);
       return (
         <Link
           to={{
@@ -152,11 +151,6 @@ const ImageScoring = (props) => {
         </Link>
       );
     } else {
-      console.log(
-        Object.keys(lesionScores).length + Object.keys(checked).length
-      );
-      console.log(images.length);
-      console.log(Object.keys(healingScores).length);
       return (
         <Form.Button negative disabled>
           Submit
@@ -176,7 +170,8 @@ const ImageScoring = (props) => {
       var nestedDict = { [typeOption]: value };
       checked[imageURL] = nestedDict;
     }
-    setChecked(checked);
+    const newChecked = { ...checked };
+    setChecked(newChecked);
   };
 
   return (
@@ -288,6 +283,8 @@ const ImageScoring = (props) => {
                     onChange={(e, data) => {
                       if (data.value == "Multiple") {
                         delete lesionScores[image.image_url];
+                        const newLesionScores = { ...lesionScores };
+                        setLesionScores(newLesionScores);
                         setShowCheckBox(
                           new Map(showCheckBox.set(image.image_url, true))
                         );
@@ -300,6 +297,8 @@ const ImageScoring = (props) => {
                         delete healingScores[image.image_url];
                         delete lesionScores[image.image_url];
                         lesionScores[image.image_url] = data.value;
+                        const newLesionScores = { ...lesionScores };
+                        setLesionScores(newLesionScores);
                         setShowCheckBox(
                           new Map(showCheckBox.set(image.image_url, false))
                         );
@@ -309,6 +308,8 @@ const ImageScoring = (props) => {
                       } else {
                         delete checked[image.image_url];
                         lesionScores[image.image_url] = data.value;
+                        const newLesionScores = { ...lesionScores };
+                        setLesionScores(newLesionScores);
                         setShowCheckBox(
                           new Map(showCheckBox.set(image.image_url, false))
                         );
@@ -316,8 +317,6 @@ const ImageScoring = (props) => {
                           new Map(lesionSelected.set(image.image_url, true))
                         );
                       }
-                      const newLesionScores = { ...lesionScores };
-                      setLesionScores(newLesionScores);
                     }}
                     options={lesionTypeOptions}
                   />
