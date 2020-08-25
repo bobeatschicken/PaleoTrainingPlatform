@@ -27,6 +27,7 @@ const Results = (props) => {
   useEffect(() => {
     if (!isLoaded) {
       if (props.location.state) {
+        console.log(props.location.state.lesionImages);
         setScores(props.location.state.scores);
         setImages(props.location.state.lesionImages);
         setHealingScores(props.location.state.healingResult);
