@@ -38,7 +38,7 @@ const References = (props) => {
           <Header size="medium">
             Lesion Expression (Gardner and Jakob, 2019)
           </Header>
-          {lesionReferences.map((lesionReference) => {
+          {lesionReferences.map((lesionReference, index) => {
             return (
               <div>
                 <h5
@@ -46,7 +46,7 @@ const References = (props) => {
                     marginLeft: "9%",
                   }}
                 >
-                  {lesionReference.id})
+                  {index + 1})
                 </h5>
                 <ReactImageMagnify
                   style={{
@@ -95,7 +95,7 @@ const References = (props) => {
               (Rinaldo et al., 2019)
             </a>
           </Header>
-          {healingReferences.map((healingReference) => {
+          {healingReferences.map((healingReference, index) => {
             return (
               <div>
                 <h5
@@ -103,7 +103,7 @@ const References = (props) => {
                     marginLeft: "9%",
                   }}
                 >
-                  {healingReference.id})
+                  {index + 1})
                 </h5>
                 <ReactImageMagnify
                   style={{
