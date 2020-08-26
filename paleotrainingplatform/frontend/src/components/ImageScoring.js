@@ -224,7 +224,7 @@ const ImageScoring = (props) => {
             />
           </Grid>
           <br />
-          {images.map((image) => {
+          {images.map((image, index) => {
             return (
               <div>
                 <h2
@@ -232,7 +232,7 @@ const ImageScoring = (props) => {
                     marginLeft: "17%",
                   }}
                 >
-                  {image.id})
+                  {index + 1})
                 </h2>
                 <ReactImageMagnify
                   style={{
