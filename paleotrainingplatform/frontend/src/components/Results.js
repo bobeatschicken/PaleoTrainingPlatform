@@ -22,7 +22,7 @@ const Results = (props) => {
   const [healingScores, setHealingScores] = useState(null);
   const [allHealingScores, setAllHealingScores] = useState(null);
   const [healingChartData, setHealingChartData] = useState(null);
-  const BASE_URL = "http://127.0.0.1:8000";
+  const BASE_URL = process.env.API_KEY;
 
   useEffect(() => {
     if (!isLoaded) {
