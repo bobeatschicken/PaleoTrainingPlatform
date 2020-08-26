@@ -23,7 +23,7 @@ const ImageScoring = (props) => {
   const [lesionSelected, setLesionSelected] = useState(new Map());
   const [educationLevel, setEducationLevel] = useState(null);
   const [timesTaken, setTimesTaken] = useState(null);
-  const BASE_URL = "http://127.0.0.1:8000";
+  const BASE_URL = process.env.API_KEY;
   const lesionTypeOptions = [
     {
       value: "Absence of pathological lesions",

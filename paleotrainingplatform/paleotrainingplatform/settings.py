@@ -144,9 +144,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/paleotrainingplatform/PaleoTrainingPlatform/paleotrainingplatform/static'
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ['S3_KEY']
+AWS_SECRET_ACCESS_KEY = os.environ['S3_SECRET']
+AWS_STORAGE_BUCKET_NAME = os.environ['S3_NAME']
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 
