@@ -96,11 +96,13 @@ DATABASES = {
 
         'NAME': 'osteologic',
 
-        'USER': 'postgres',
+        'USER': 'chrisyang365',
 
         'PASSWORD': 'minecraft12311999',
 
-        'HOST': 'localhost',
+        'HOST': 'osteologic.coycnigvkl0x.us-west-1.rds.amazonaws.com',
+
+        'PORT': '5432'
     }
 }
 
@@ -143,10 +145,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/home/paleotrainingplatform/PaleoTrainingPlatform/paleotrainingplatform/static'
-
-AWS_ACCESS_KEY_ID = os.environ['S3_KEY']
-AWS_SECRET_ACCESS_KEY = os.environ['S3_SECRET']
-AWS_STORAGE_BUCKET_NAME = os.environ['S3_NAME']
+AWS_ACCESS_KEY_ID = os.environ.get('S3_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('S3_SECRET')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('S3_NAME')
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 

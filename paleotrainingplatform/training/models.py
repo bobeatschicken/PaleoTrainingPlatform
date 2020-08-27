@@ -77,7 +77,7 @@ class HealingReference(models.Model):
     image_url = models.ImageField(unique=True)
 
     def __str__(self):
-        return image_url
+        return self.image_url
 
     def delete(self, *args, **kwargs):
         self.image_url.delete()
