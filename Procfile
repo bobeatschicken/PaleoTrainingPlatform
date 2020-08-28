@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath paleotrainingplatform/paleotrainingplatform/wsgi.py --log-file -
+web: gunicorn paleotrainingplatform.wsgi.py --log-file -
