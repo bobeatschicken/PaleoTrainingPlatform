@@ -7,7 +7,7 @@ const References = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [lesionReferences, setLesionReferences] = useState(null);
   const [healingReferences, setHealingReferences] = useState(null);
-  const BASE_URL = process.env.REACT_APP_API_URL;
+  const BASE_URL = "https://osteologic.herokuapp.com";
 
   useEffect(() => {
     if (!isLoaded) {

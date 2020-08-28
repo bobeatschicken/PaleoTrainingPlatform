@@ -23,7 +23,7 @@ const ImageScoring = (props) => {
   const [lesionSelected, setLesionSelected] = useState(new Map());
   const [educationLevel, setEducationLevel] = useState(null);
   const [timesTaken, setTimesTaken] = useState(null);
-  const BASE_URL = process.env.REACT_APP_API_URL;
+  const BASE_URL = "https://osteologic.herokuapp.com";
 
   const lesionTypeOptions = [
     {

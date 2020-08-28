@@ -22,7 +22,7 @@ const Results = (props) => {
   const [healingScores, setHealingScores] = useState(null);
   const [allHealingScores, setAllHealingScores] = useState(null);
   const [healingChartData, setHealingChartData] = useState(null);
-  const BASE_URL = process.env.REACT_APP_API_URL;
+  const BASE_URL = "https://osteologic.herokuapp.com";
 
   useEffect(() => {
     if (!isLoaded) {
