@@ -53,14 +53,23 @@ const Results = (props) => {
             setAllScores(result.data);
             var data = {};
             for (var i = 0; i < result.data.length; i++) {
-              if (result.data[i].image_url in data) {
-                if (result.data[i].score in data[result.data[i].image_url]) {
-                  data[result.data[i].image_url][result.data[i].score] += 1;
+              if (result.data[i].image_url.split("?")[0] in data) {
+                if (
+                  result.data[i].score in
+                  data[result.data[i].image_url.split("?")[0]]
+                ) {
+                  data[result.data[i].image_url.split("?")[0]][
+                    result.data[i].score
+                  ] += 1;
                 } else {
-                  data[result.data[i].image_url][result.data[i].score] = 1;
+                  data[result.data[i].image_url.split("?")[0]][
+                    result.data[i].score
+                  ] = 1;
                 }
               } else {
-                data[result.data[i].image_url] = { [result.data[i].score]: 1 };
+                data[result.data[i].image_url.split("?")[0]] = {
+                  [result.data[i].score]: 1,
+                };
               }
             }
             var scoresDict = {};
@@ -76,7 +85,6 @@ const Results = (props) => {
                 }
               }
             }
-            console.log(scoresDict);
             setChartData(scoresDict);
           }
           Axios.get(`${BASE_URL}/api/training/healingScore/`)
@@ -85,16 +93,21 @@ const Results = (props) => {
                 setAllHealingScores(result.data);
                 var data = {}; // {image.url : {healingDegree: count}}
                 for (var i = 0; i < result.data.length; i++) {
-                  if (result.data[i].image_url in data) {
+                  if (result.data[i].image_url.split("?")[0] in data) {
                     if (
-                      result.data[i].score in data[result.data[i].image_url]
+                      result.data[i].score in
+                      data[result.data[i].image_url.split("?")[0]]
                     ) {
-                      data[result.data[i].image_url][result.data[i].score] += 1;
+                      data[result.data[i].image_url.split("?")[0]][
+                        result.data[i].score
+                      ] += 1;
                     } else {
-                      data[result.data[i].image_url][result.data[i].score] = 1;
+                      data[result.data[i].image_url.split("?")[0]][
+                        result.data[i].score
+                      ] = 1;
                     }
                   } else {
-                    data[result.data[i].image_url] = {
+                    data[result.data[i].image_url.split("?")[0]] = {
                       [result.data[i].score]: 1,
                     };
                   }
@@ -112,7 +125,6 @@ const Results = (props) => {
                     }
                   }
                 }
-                console.log(healingScoresDict);
                 setHealingChartData(healingScoresDict);
                 setIsLoaded(true);
               }
@@ -232,13 +244,13 @@ const Results = (props) => {
                         chartType="ColumnChart"
                         width="100%"
                         column="100%"
-                        data={chartData[image.image_url]}
+                        data={chartData[image.image_url.split("?")[0]]}
                       />
                       <Chart
                         chartType="ColumnChart"
                         width="100%"
                         column="100%"
-                        data={healingChartData[image.image_url]}
+                        data={healingChartData[image.image_url.split("?")[0]]}
                       />
                     </Card>
                   );
