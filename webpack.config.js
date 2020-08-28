@@ -1,3 +1,5 @@
+const webpack = require("webpack");
+
 module.exports = {
   module: {
     rules: [
@@ -5,13 +7,20 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader"
-        }
+          loader: "babel-loader",
+        },
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader"]
-      }
-    ]
-  }
+        use: ["style-loader", "css-loader"],
+      },
+    ],
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      "process.env": {
+        REACT_API_URL: process.env.REACT_API_URL,
+      },
+    }),
+  ],
 };

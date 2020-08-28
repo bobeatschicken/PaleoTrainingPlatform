@@ -7,7 +7,7 @@ const References = (props) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [lesionReferences, setLesionReferences] = useState(null);
   const [healingReferences, setHealingReferences] = useState(null);
-  const BASE_URL = process.env.API_KEY;
+  const BASE_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (!isLoaded) {

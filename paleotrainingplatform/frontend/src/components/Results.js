@@ -22,7 +22,7 @@ const Results = (props) => {
   const [healingScores, setHealingScores] = useState(null);
   const [allHealingScores, setAllHealingScores] = useState(null);
   const [healingChartData, setHealingChartData] = useState(null);
-  const BASE_URL = process.env.API_KEY;
+  const BASE_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (!isLoaded) {

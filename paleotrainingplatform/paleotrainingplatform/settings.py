@@ -26,7 +26,7 @@ SECRET_KEY = '1#1h#!@zf%65z$!7w19p_au((rtj^v8%f-#_(nl%(e)10nywxw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['paleotrainingplatform.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['osteologic.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
