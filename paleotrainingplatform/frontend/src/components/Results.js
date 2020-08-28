@@ -27,7 +27,6 @@ const Results = (props) => {
   useEffect(() => {
     if (!isLoaded) {
       if (props.location.state) {
-        console.log(props.location.state.lesionImages);
         setScores(props.location.state.scores);
         setImages(props.location.state.lesionImages);
         setHealingScores(props.location.state.healingResult);
@@ -77,6 +76,7 @@ const Results = (props) => {
                 }
               }
             }
+            console.log(scoresDict);
             setChartData(scoresDict);
           }
           Axios.get(`${BASE_URL}/api/training/healingScore/`)
@@ -99,7 +99,6 @@ const Results = (props) => {
                     };
                   }
                 }
-                console.log(data);
                 var healingScoresDict = {};
                 for (const [imageURL, degreeDict] of Object.entries(data)) {
                   for (const [degree, count] of Object.entries(degreeDict)) {
@@ -113,6 +112,7 @@ const Results = (props) => {
                     }
                   }
                 }
+                console.log(healingScoresDict);
                 setHealingChartData(healingScoresDict);
                 setIsLoaded(true);
               }
