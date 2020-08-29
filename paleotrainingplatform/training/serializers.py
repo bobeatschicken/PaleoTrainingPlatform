@@ -30,7 +30,7 @@ class LesionImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = LesionImage
         fields = '__all__'
-        # depth = 1
+        depth = 1
 
 
 class LesionReferenceSerializer(serializers.ModelSerializer):
