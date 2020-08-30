@@ -388,7 +388,12 @@ const ImageScoring = (props) => {
           <Grid centered>{handleSubmitDisplay()}</Grid>
         </Form>
       ) : (
-        <Loader active />
+        <div>
+          <Grid centered>
+            <h1>Generating Quiz</h1>
+          </Grid>
+          <Loader active />
+        </div>
       )}
     </div>
   );
