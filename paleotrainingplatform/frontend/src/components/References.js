@@ -148,7 +148,7 @@ const References = (props) => {
           })}
         </div>
       ) : (
-        <Loader active />
+        <Loader active>Loading References</Loader>
       )}
     </div>
   );
