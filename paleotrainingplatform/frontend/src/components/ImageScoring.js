@@ -65,11 +65,18 @@ const ImageScoring = (props) => {
   Axios.defaults.xsrfCookieName = "csrftoken";
   Axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+  function getRandom(arr, n) {
+    var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+    if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
     }
+    return result;
   }
 
   useEffect(() => {
@@ -77,8 +84,8 @@ const ImageScoring = (props) => {
       Axios.get(`${BASE_URL}/api/training/lesionImage/`)
         .then((result) => {
           if (result.data) {
-            shuffleArray(result.data);
-            setImages(result.data);
+            let quiz = getRandom(result.data, 10);
+            setImages(quiz);
             setIsLoaded(true);
           }
         })

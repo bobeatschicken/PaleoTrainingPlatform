@@ -17,7 +17,6 @@ const Results = (props) => {
   const [scores, setScores] = useState(null);
   const [images, setImages] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [allScores, setAllScores] = useState(null);
   const [chartData, setChartData] = useState(null);
   const [healingScores, setHealingScores] = useState(null);
   const [allHealingScores, setAllHealingScores] = useState(null);
@@ -26,7 +25,13 @@ const Results = (props) => {
 
   useEffect(() => {
     if (!isLoaded) {
+      const imageURLSet = new Set();
       if (props.location.state) {
+        for (let i = 0; i < props.location.state.lesionImages; i++) {
+          imageURLSet.add(
+            props.location.state.lesionImages[i].image_url.split("?")[0]
+          );
+        }
         setScores(props.location.state.scores);
         setImages(props.location.state.lesionImages);
         setHealingScores(props.location.state.healingResult);
@@ -37,6 +42,9 @@ const Results = (props) => {
           setScores(JSON.parse(scoresData));
         }
         const imagesData = localStorage.getItem("images");
+        for (let i = 0; i < imagesData.length; i++) {
+          imageURLSet.add(imagesData[i].image_url.split("?")[0]);
+        }
         if (imagesData) {
           console.log("got images from localstorage");
           setImages(JSON.parse(imagesData));
@@ -50,9 +58,11 @@ const Results = (props) => {
       Axios.get(`${BASE_URL}/api/training/lesionScore/`)
         .then((result) => {
           if (result.data) {
-            setAllScores(result.data);
             var data = {};
             for (var i = 0; i < result.data.length; i++) {
+              if (!imageURLSet.has(result.data[i].image_url.split("?")[0])) {
+                continue;
+              }
               if (result.data[i].image_url.split("?")[0] in data) {
                 if (
                   result.data[i].score in
@@ -90,7 +100,6 @@ const Results = (props) => {
           Axios.get(`${BASE_URL}/api/training/healingScore/`)
             .then((result) => {
               if (result.data) {
-                setAllHealingScores(result.data);
                 var data = {}; // {image.url : {healingDegree: count}}
                 for (var i = 0; i < result.data.length; i++) {
                   if (result.data[i].image_url.split("?")[0] in data) {
