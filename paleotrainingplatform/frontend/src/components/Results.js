@@ -102,6 +102,11 @@ const Results = (props) => {
               if (result.data) {
                 var data = {}; // {image.url : {healingDegree: count}}
                 for (var i = 0; i < result.data.length; i++) {
+                  if (
+                    !imageURLSet.has(result.data[i].image_url.split("?")[0])
+                  ) {
+                    continue;
+                  }
                   if (result.data[i].image_url.split("?")[0] in data) {
                     if (
                       result.data[i].score in
