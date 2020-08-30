@@ -59,6 +59,7 @@ const Results = (props) => {
         .then((result) => {
           if (result.data) {
             var data = {};
+            console.log(imageURLSet);
             for (var i = 0; i < result.data.length; i++) {
               if (!imageURLSet.has(result.data[i].image_url.split("?")[0])) {
                 continue;
