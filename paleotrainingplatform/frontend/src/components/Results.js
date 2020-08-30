@@ -27,7 +27,7 @@ const Results = (props) => {
     if (!isLoaded) {
       const imageURLSet = new Set();
       if (props.location.state) {
-        for (let i = 0; i < props.location.state.lesionImages; i++) {
+        for (let i = 0; i < props.location.state.lesionImages.length; i++) {
           imageURLSet.add(
             props.location.state.lesionImages[i].image_url.split("?")[0]
           );
