@@ -37,6 +37,10 @@ const ImageScoring = (props) => {
     { value: "Type E1", text: "Type E1" },
     { value: "Type E2", text: "Type E2" },
     { value: "Multiple", text: "More than one lesion type present" },
+    {
+      value: "Photo quality insufficient for determination",
+      text: "Photo quality insufficient for determination",
+    },
   ];
   const lesionActivityOptions = [
     { value: "N/A", text: "N/A" },
@@ -44,6 +48,10 @@ const ImageScoring = (props) => {
     { value: "2", text: "2" },
     { value: "3", text: "3" },
     { value: "4", text: "4" },
+    {
+      value: "Photo quality insufficient for determination",
+      text: "Photo quality insufficient for determination",
+    },
   ];
   const statusOptions = [
     { value: "Undergraduate", text: "Undergraduate" },
@@ -84,7 +92,7 @@ const ImageScoring = (props) => {
       Axios.get(`${BASE_URL}/api/training/lesionImage/`)
         .then((result) => {
           if (result.data) {
-            let quiz = getRandom(result.data, 10);
+            let quiz = getRandom(result.data, 5);
             setImages(quiz);
             setIsLoaded(true);
           }
