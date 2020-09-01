@@ -144,7 +144,6 @@ const ImageScoring = (props) => {
           console.log(response);
         })
         .catch(function (error) {
-          console.log(healingScores);
           console.log(error);
         });
     }

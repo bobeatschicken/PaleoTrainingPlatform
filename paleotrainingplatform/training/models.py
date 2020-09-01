@@ -32,7 +32,7 @@ class LesionScore(models.Model):
 
 class HealingScore(models.Model):
     image_url = models.CharField(max_length=256)
-    score = models.CharField(max_length=3)
+    score = models.CharField(max_length=256)
     education_level = models.CharField(max_length=256)
     times_taken = models.CharField(max_length=256)
 
