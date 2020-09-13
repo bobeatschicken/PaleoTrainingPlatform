@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Loader, Label, Dropdown, Grid, Header } from "semantic-ui-react";
+import { Loader, Label, Grid, Header } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import Axios from "axios";
 
-const References = (props) => {
+const References = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [lesionReferences, setLesionReferences] = useState(null);
   const [healingReferences, setHealingReferences] = useState(null);

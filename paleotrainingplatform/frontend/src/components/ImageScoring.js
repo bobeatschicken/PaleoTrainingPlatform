@@ -1,13 +1,5 @@
-import React, { useEffect, useState, useCallback } from "react";
-import {
-  Loader,
-  Label,
-  Grid,
-  Form,
-  Checkbox,
-  Segment,
-  Button,
-} from "semantic-ui-react";
+import React, { useEffect, useState } from "react";
+import { Loader, Label, Grid, Form, Checkbox } from "semantic-ui-react";
 import ReactImageMagnify from "react-image-magnify";
 import { Link } from "react-router-dom";
 import Axios from "axios";

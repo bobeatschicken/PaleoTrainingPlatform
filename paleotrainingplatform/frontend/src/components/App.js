@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import ReactDOM from "react-dom";
-import Axios from "axios";
 import ImageForm from "./ImageForm";
 import Results from "./Results";
 import HomepageLayout from "./HomePage";
