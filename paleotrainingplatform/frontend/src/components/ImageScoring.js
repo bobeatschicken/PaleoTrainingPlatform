@@ -84,7 +84,7 @@ const ImageScoring = (props) => {
       Axios.get(`${BASE_URL}/api/training/lesionImage/`)
         .then((result) => {
           if (result.data) {
-            let quiz = getRandom(result.data, 5);
+            let quiz = getRandom(result.data.slice(0,50), 5);
             setImages(quiz);
             setIsLoaded(true);
           }
