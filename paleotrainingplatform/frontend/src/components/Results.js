@@ -275,7 +275,7 @@ const Results = (props) => {
           </Grid>
           <Link
             to={{
-              pathname: "/",
+              pathname: "/quiz",
             }}
           >
             <Form.Button

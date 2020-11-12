@@ -197,12 +197,23 @@ const HomepageLayout = () => (
               Improved accuracy or consistency due to memorizing individual
               photos does nothing for building your osteological skill set and
               will bias the site-collected data on how repeated site use affects
-              scoring consistency. We have chosen to use scoring references from
+              scoring consistency.
+            </p>
+            <p style={{ fontSize: "1.33em" }}>
+              We have chosen to use scoring references from
               Rinaldo et al. (2019) for activity status of orbital roof lesions
               at time of death. This scoring reference yielded the most
               consistent interobserver concordance in a workshop testing
               multiple scoring references for porous cranial lesions at the 2019
-              meeting of the Paleopathology Association.
+              meeting of the Paleopathology Association. The Gardner & Jakob reference 
+              for lesion morphology is used here due to promising results of increased 
+              inter- and intra-observer agreement. It applies a biological approach to 
+              lesion classification that also considers the effect of age at death on 
+              non-pathological orbital roof morphology. Rather than scoring orbital roof 
+              lesion severity, Gardner and Jakob group lesions with similar morphology that 
+              implies similar etiologies. The updated lesion classifications and reference 
+              photos provide clear examples of each lesion type, designed to reduce inconsistency 
+              in lesion interpretation.
             </p>
           </Grid.Column>
         </Grid.Row>
