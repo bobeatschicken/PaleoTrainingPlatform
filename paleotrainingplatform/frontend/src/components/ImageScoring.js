@@ -65,33 +65,40 @@ const ImageScoring = (props) => {
   Axios.defaults.xsrfCookieName = "csrftoken";
   Axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
-  function getRandom(arr, n) {
-    var result = new Array(n),
-      len = arr.length,
-      taken = new Array(len);
-    if (n > len)
-      throw new RangeError("getRandom: more elements taken than available");
-    while (n--) {
-      var x = Math.floor(Math.random() * len);
-      result[n] = arr[x in taken ? taken[x] : x];
-      taken[x] = --len in taken ? taken[len] : len;
+  function getRandom(n) {
+    var arr = [];
+    while(arr.length < 5){
+        var r = Math.floor(Math.random() * n) + 1;
+        if(arr.indexOf(r) === -1) arr.push(r);
     }
-    return result;
+    return arr;
   }
 
   useEffect(() => {
     if (!isLoaded) {
-      Axios.get(`${BASE_URL}/api/training/lesionImage/`)
-        .then((result) => {
-          if (result.data) {
-            let quiz = getRandom(result.data.slice(0,50), 5);
-            setImages(quiz);
-            setIsLoaded(true);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      let randomIDs = getRandom(50)
+      let promises = []
+      for (let i = 0; i < randomIDs.length; i++) {
+        let promise = Axios.get(`${BASE_URL}/api/training/lesionImage/${randomIDs[i]}`)
+        promises.push(promise)
+      }
+      // Axios.get(`${BASE_URL}/api/training/lesionImage/`)
+      //   .then((result) => {
+      //     if (result.data) {
+      //       let quiz = getRandom(result.data.slice(0,50), 5);
+      //       setImages(quiz);
+      //       setIsLoaded(true);
+      //     }
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
+      Promise.all(promises).then((result) => {
+        setImages(result.data)
+        setIsLoaded(true)
+      }).catch((error) => {
+        console.log(error)
+      })
     }
   }, [isLoaded]);
 
