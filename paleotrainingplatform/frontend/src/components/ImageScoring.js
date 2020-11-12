@@ -94,6 +94,7 @@ const ImageScoring = (props) => {
       //     console.log(error);
       //   });
       Promise.all(promises).then((result) => {
+        console.log(result)
         setImages(result.data)
         setIsLoaded(true)
       }).catch((error) => {
