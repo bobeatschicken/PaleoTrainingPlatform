@@ -93,9 +93,11 @@ const ImageScoring = (props) => {
       //   .catch(function (error) {
       //     console.log(error);
       //   });
+      let quiz = []
       Promise.all(promises).then((result) => {
-        console.log(result)
-        setImages(result.data)
+        quiz.push(result.data)
+      }).then(() => {
+        setImages(quiz)
         setIsLoaded(true)
       }).catch((error) => {
         console.log(error)
