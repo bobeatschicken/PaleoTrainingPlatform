@@ -224,6 +224,21 @@ const ImageScoring = (props) => {
             />
           </Grid>
           <br />
+          <hr />
+          <h5
+            style={{
+              marginLeft: "17%",
+            }}
+          >
+            For each question, choose the lesion classification and healing status from the dropdown menus.
+            </h5>
+            <h5
+            style={{
+              marginLeft: "17%",
+            }}
+            >
+*Please Note*: You may indicate that a lesion comprises multiple lesion types by choosing this option in the dropdown menu and then selecting the appropriate lesion types from the list that appears.
+          </h5>
           {images.map((image, index) => {
             return (
               <div>
