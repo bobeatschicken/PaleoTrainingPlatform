@@ -12,6 +12,7 @@ import {
 import Axios from "axios";
 import Chart from "react-google-charts";
 import { Link } from "react-router-dom";
+import References from "./References";
 
 const Results = (props) => {
   const [scores, setScores] = useState(null);
@@ -170,9 +171,9 @@ const Results = (props) => {
             marginBottom: "10px",
           }}
         >
-          <Grid columns={1} relaxed="very" divided style={{ height: "100%" }}>
+          <Grid columns={2} relaxed="very" divided style={{ height: "100%" }}>
             <GridColumn
-              width={16}
+              width={11}
               style={{ height: "100%", overflowY: "scroll" }}
             >
               <Card.Group itemsPerRow={5}>
@@ -271,6 +272,10 @@ const Results = (props) => {
                   );
                 })}
               </Card.Group>
+            </GridColumn>
+            <GridColumn width={5} style={{ height: "100%", overflowY: "scroll" }}>
+              <Header size="large">Lesion Reference Images</Header>
+              <References />
             </GridColumn>
           </Grid>
           <Link
