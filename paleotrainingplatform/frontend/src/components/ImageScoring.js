@@ -242,6 +242,15 @@ const ImageScoring = (props) => {
           </Grid>
           <br />
           <br />
+          <Grid centered>
+            <Form.Select
+              options={timesCompleted}
+              onChange={(e, data) => {
+                setTimesTaken(data.value);
+              }}
+            />
+          </Grid>
+          <br />
           <hr />
           <h5
             style={{
@@ -258,15 +267,6 @@ const ImageScoring = (props) => {
 *Please Note*: You may indicate that a lesion comprises multiple lesion types by choosing this option in the dropdown menu and then selecting the appropriate lesion types from the list that appears.
           </h5>
           <hr />
-          <Grid centered>
-            <Form.Select
-              options={timesCompleted}
-              onChange={(e, data) => {
-                setTimesTaken(data.value);
-              }}
-            />
-          </Grid>
-          <br />
           {images.map((image, index) => {
             return (
               <div>
