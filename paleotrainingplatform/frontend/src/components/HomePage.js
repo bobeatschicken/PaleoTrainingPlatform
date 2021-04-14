@@ -245,6 +245,15 @@ const HomepageLayout = () => (
                 (anderson.amy.susan@gmail.com) with questions or comments.
               </p>
               <Divider as="h4" inverted></Divider>
+              <Header as="h4" inverted>
+                Acknowledgements
+              </Header>
+              <p>
+                Heartfelt thanks to Tina Jakob for her work in developing the lesion 
+                classification scheme used here, and to Chris Yang for his tireless work in 
+                bringing this site to life.
+              </p>
+              <Divider as="h4" inverted></Divider>
               <p>
                 Buikstra JE, Ubelaker DH. 1994. Standards for data collection
                 from human skeletal remains: Proceedings of a seminar at the

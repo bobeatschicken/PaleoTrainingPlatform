@@ -13,7 +13,6 @@ const ImageScoring = (props) => {
   const [checked, setChecked] = useState({});
   const [resultDict, setResultDict] = useState({});
   const [lesionSelected, setLesionSelected] = useState(new Map());
-  const [educationLevel, setEducationLevel] = useState(null);
   const [timesTaken, setTimesTaken] = useState(null);
   const BASE_URL = "https://osteologic.herokuapp.com";
 
@@ -124,7 +123,7 @@ const ImageScoring = (props) => {
       Axios.post(`${BASE_URL}/api/training/lesionScore/`, {
         image_url: imageURL,
         score: type,
-        education_level: educationLevel,
+        education_level: "N/A",
         times_taken: timesTaken,
         csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
@@ -139,7 +138,7 @@ const ImageScoring = (props) => {
       Axios.post(`${BASE_URL}/api/training/healingScore/`, {
         image_url: imageURL,
         score: degree,
-        education_level: educationLevel,
+        education_level: "N/A",
         times_taken: timesTaken,
         csrfmiddlewaretoken: window.CSRF_TOKEN,
       })
@@ -154,7 +153,6 @@ const ImageScoring = (props) => {
 
   function handleSubmitDisplay() {
     if (
-      educationLevel &&
       timesTaken &&
       Object.keys(lesionScores).length + Object.keys(checked).length ===
         images.length &&
@@ -212,27 +210,6 @@ const ImageScoring = (props) => {
           >
             Preliminary Questions:
           </h1>
-          <br />
-          <Grid centered>
-            <Label size="big">
-              Which of the following best describes your
-              educational/professional status?
-            </Label>
-          </Grid>
-          <br />
-          <br />
-          <Grid centered>
-            <Form.Select
-              style={{
-                clear: "both",
-              }}
-              options={statusOptions}
-              onChange={(e, data) => {
-                setEducationLevel(data.value);
-              }}
-            />
-          </Grid>
-          <br />
           <br />
           <Grid centered>
             <Label size="big">
